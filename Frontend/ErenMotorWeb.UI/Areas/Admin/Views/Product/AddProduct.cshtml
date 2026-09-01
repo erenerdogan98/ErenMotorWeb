@@ -1,0 +1,376 @@
+﻿@model ErenMotorWeb.UI.Core.Dtos.ProductDto.CreateProductDto
+
+@{
+    ViewData["Title"] = "Yeni Ürün Ekle";
+    Layout = "~/Areas/Admin/Views/Layout/AdminLayout.cshtml";
+}
+
+<div class="product-create-page">
+
+    <!-- Sayfa Başlığı -->
+    <div class="page-header">
+
+        <div class="page-header-left">
+            <h1>Yeni Ürün Ekle</h1>
+            <p>Mağazanıza yeni bir ürün ekleyin.</p>
+        </div>
+
+        <div class="page-header-right">
+            <a asp-area="Admin"
+               asp-controller="Product"
+               asp-action="Products"
+               class="btn btn-secondary">
+                ← Ürünlere Dön
+            </a>
+        </div>
+
+    </div>
+
+
+    <!-- Validation -->
+    <div asp-validation-summary="ModelOnly"
+         class="validation-summary">
+    </div>
+
+
+    <form asp-area="Admin"
+          asp-controller="Product"
+          asp-action="AddProduct"
+          method="post">
+
+        <!-- Genel Bilgiler -->
+        <div class="form-card">
+
+            <div class="form-card-header">
+                <h2>Genel Bilgiler</h2>
+                <p>Ürünün temel bilgilerini girin.</p>
+            </div>
+
+            <div class="form-card-body">
+
+                <div class="form-group full-width">
+                    <label asp-for="ProductName">
+                        Ürün Adı
+                    </label>
+
+                    <input asp-for="ProductName"
+                           class="form-control"
+                           placeholder="Örn: 29x2.10 Timsah Bisiklet Dış Lastiği" />
+
+                    <span asp-validation-for="ProductName"
+                          class="field-validation">
+                    </span>
+                </div>
+
+
+                <div class="form-row">
+
+                    <div class="form-group">
+                        <label asp-for="Slug">
+                            Slug
+                        </label>
+
+                        <input asp-for="Slug"
+                               class="form-control"
+                               placeholder="urun-adi-slug" />
+
+                        <span asp-validation-for="Slug"
+                              class="field-validation">
+                        </span>
+
+                        <small>
+                            URL içerisinde kullanılacak ürün adresi.
+                        </small>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label asp-for="Sku">
+                            SKU
+                        </label>
+
+                        <input asp-for="Sku"
+                               class="form-control"
+                               placeholder="Örn: TM-2910" />
+
+                        <span asp-validation-for="Sku"
+                              class="field-validation">
+                        </span>
+                    </div>
+
+                </div>
+
+
+                <div class="form-group">
+                    <label asp-for="Barcode">
+                        Barkod
+                    </label>
+
+                    <input asp-for="Barcode"
+                           class="form-control"
+                           placeholder="Barkod numarasını girin" />
+
+                    <span asp-validation-for="Barcode"
+                          class="field-validation">
+                    </span>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Kategori ve Marka -->
+        <div class="form-card">
+
+            <div class="form-card-header">
+                <h2>Kategori ve Marka</h2>
+                <p>Ürünün hangi kategoriye ve markaya ait olduğunu seçin.</p>
+            </div>
+
+            <div class="form-card-body">
+
+                <div class="form-row">
+
+                    <div class="form-group">
+
+                        <label asp-for="CategoryId">
+                            Kategori
+                        </label>
+
+                        <select asp-for="CategoryId"
+                                class="form-control">
+
+                            <option value="0">
+                                Kategori seçin
+                            </option>
+
+                        </select>
+
+                        <span asp-validation-for="CategoryId"
+                              class="field-validation">
+                        </span>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label asp-for="BrandId">
+                            Marka
+                        </label>
+
+                        <select asp-for="BrandId"
+                                class="form-control">
+
+                            <option value="0">
+                                Marka seçin
+                            </option>
+
+                        </select>
+
+                        <span asp-validation-for="BrandId"
+                              class="field-validation">
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Satış Bilgileri -->
+        <div class="form-card">
+
+            <div class="form-card-header">
+                <h2>Satış Bilgileri</h2>
+                <p>Ürünün fiyat ve stok bilgilerini belirleyin.</p>
+            </div>
+
+            <div class="form-card-body">
+
+                <div class="form-row">
+
+                    <div class="form-group">
+
+                        <label asp-for="Price">
+                            Satış Fiyatı
+                        </label>
+
+                        <div class="input-with-suffix">
+
+                            <input asp-for="Price"
+                                   type="number"
+                                   step="0.01"
+                                   class="form-control"
+                                   placeholder="0.00" />
+
+                            <span>₺</span>
+
+                        </div>
+
+                        <span asp-validation-for="Price"
+                              class="field-validation">
+                        </span>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label asp-for="Stock">
+                            Stok
+                        </label>
+
+                        <input asp-for="Stock"
+                               type="number"
+                               min="0"
+                               class="form-control"
+                               placeholder="0" />
+
+                        <span asp-validation-for="Stock"
+                              class="field-validation">
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Açıklamalar -->
+        <div class="form-card">
+
+            <div class="form-card-header">
+                <h2>Ürün Açıklaması</h2>
+                <p>Ürünün kısa ve detaylı açıklamasını girin.</p>
+            </div>
+
+            <div class="form-card-body">
+
+                <div class="form-group">
+
+                    <label asp-for="ShortDescription">
+                        Kısa Açıklama
+                    </label>
+
+                    <textarea asp-for="ShortDescription"
+                              class="form-control textarea-short"
+                              placeholder="Ürün hakkında kısa bir açıklama...">
+                    </textarea>
+
+                    <span asp-validation-for="ShortDescription"
+                          class="field-validation">
+                    </span>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label asp-for="Description">
+                        Detaylı Açıklama
+                    </label>
+
+                    <textarea asp-for="Description"
+                              class="form-control textarea-large"
+                              placeholder="Ürünün detaylı açıklamasını girin...">
+                    </textarea>
+
+                    <span asp-validation-for="Description"
+                          class="field-validation">
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Ürün Durumu -->
+        <div class="form-card">
+
+            <div class="form-card-header">
+                <h2>Ürün Durumu</h2>
+                <p>Ürünün mağazadaki görünürlüğünü belirleyin.</p>
+            </div>
+
+            <div class="form-card-body">
+
+                <div class="switch-group">
+
+                    <label class="switch-label">
+
+                        <input asp-for="IsActive"
+                               type="checkbox" />
+
+                        <span class="switch"></span>
+
+                        <span>
+                            <strong>Aktif Ürün</strong>
+                            <small>
+                                Ürün mağazada aktif olarak yayınlansın.
+                            </small>
+                        </span>
+
+                    </label>
+
+
+                    <label class="switch-label">
+
+                        <input asp-for="IsFeatured"
+                               type="checkbox" />
+
+                        <span class="switch"></span>
+
+                        <span>
+                            <strong>Öne Çıkan Ürün</strong>
+                            <small>
+                                Ürün öne çıkan ürünler arasında gösterilsin.
+                            </small>
+                        </span>
+
+                    </label>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Form Actions -->
+        <div class="form-actions">
+
+            <a asp-area="Admin"
+               asp-controller="Product"
+               asp-action="Products"
+               class="btn btn-secondary">
+                İptal
+            </a>
+
+            <button type="submit"
+                    class="btn btn-primary">
+                Ürünü Kaydet
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+
+@section Scripts {
+
+    <partial name="_ValidationScriptsPartial" />
+
+}
+

@@ -1,0 +1,17 @@
+﻿namespace ErenMotorWeb.Dto.ProductImageDto
+{
+    public class UpdateProductImageDto
+    {
+        public int Id { get; set; }
+
+        public int ProductId { get; set; }
+
+        public string ImageUrl { get; set; } = string.Empty;
+
+        public string? AltText { get; set; }
+
+        public int SortOrder { get; set; }
+
+        public bool IsMain { get; set; }
+    }
+}

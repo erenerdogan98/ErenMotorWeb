@@ -1,0 +1,16 @@
+﻿@using ErenMotorWeb.UI.Core.Dtos.CategoryDto
+@model IEnumerable<ResultCategoryDto>
+
+@if (Model != null)
+{
+    foreach (var category in Model)
+    {
+        <a asp-controller="Category"
+           asp-action="Detail"
+           asp-route-slug="@category.Slug">
+
+            @category.Name
+
+        </a>
+    }
+}

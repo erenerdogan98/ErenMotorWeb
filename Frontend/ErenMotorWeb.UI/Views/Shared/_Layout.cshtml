@@ -1,0 +1,394 @@
+﻿```cshtml
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>@ViewData["Title"] - Eren Motor</title>
+
+    <meta name="description"
+          content="Eren Motor - Bisiklet, elektrikli bisiklet, motosiklet ve yedek parça ürünleri." />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+          rel="stylesheet" />
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+
+    @await RenderSectionAsync("Styles", required: false)
+</head>
+
+<body>
+
+    <!-- TOP BAR -->
+    <div class="top-bar">
+        <div class="container top-bar-inner">
+
+            <div class="top-bar-left">
+                <span>
+                    <i class="fa-solid fa-truck-fast"></i>
+                    Hızlı ve Güvenli Kargo
+                </span>
+
+                <span class="top-bar-divider"></span>
+
+                <span>
+                    <i class="fa-solid fa-shield-halved"></i>
+                    Güvenli Alışveriş
+                </span>
+            </div>
+
+            <div class="top-bar-right">
+                <span>
+                    <i class="fa-solid fa-headset"></i>
+                    Destek
+                </span>
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- MAIN HEADER -->
+    <header class="main-header">
+
+        <div class="container header-inner">
+
+            <!-- LOGO -->
+            <a class="brand" asp-controller="Home" asp-action="Index">
+
+                <div class="brand-icon">
+                    <i class="fa-solid fa-motorcycle"></i>
+                </div>
+
+                <div class="brand-text">
+                    <span class="brand-name">EREN MOTOR</span>
+                    <span class="brand-subtitle">Bisiklet & Yedek Parça</span>
+                </div>
+
+            </a>
+
+
+            <!-- SEARCH -->
+            <div class="search-area">
+
+                <form class="search-box">
+
+                    <input type="text"
+                           placeholder="Ürün, marka veya model ara..."
+                           autocomplete="off" />
+
+                    <button type="submit">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </button>
+
+                </form>
+
+            </div>
+
+
+            <!-- HEADER ACTIONS -->
+            <div class="header-actions">
+
+                <a href="#" class="header-action">
+
+                    <div class="action-icon">
+                        <i class="fa-regular fa-user"></i>
+                    </div>
+
+                    <div class="action-text">
+                        <small>Hoş Geldiniz</small>
+                        <strong>Hesabım</strong>
+                    </div>
+
+                </a>
+
+
+                <a href="#" class="header-action cart-action">
+
+                    <div class="action-icon cart-icon">
+
+                        <i class="fa-solid fa-basket-shopping"></i>
+
+                        <span class="cart-count">0</span>
+
+                    </div>
+
+                    <div class="action-text">
+                        <small>Alışveriş</small>
+                        <strong>Sepetim</strong>
+                    </div>
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <!-- NAVIGATION -->
+    <nav class="main-nav">
+
+        <div class="container nav-inner">
+
+            <div class="category-menu">
+
+                <button class="category-button">
+
+                    <i class="fa-solid fa-bars"></i>
+
+                    <span>Kategoriler</span>
+
+                    <i class="fa-solid fa-chevron-down category-arrow"></i>
+
+                </button>
+
+            </div>
+
+
+            <div class="nav-links">
+
+                <a asp-controller="Home" asp-action="Index" class="nav-link active">
+                    Ana Sayfa
+                </a>
+
+                <a href="#" class="nav-link">
+                    Bisiklet
+                </a>
+
+                <a href="#" class="nav-link">
+                    Elektrikli Bisiklet
+                </a>
+
+                <a href="#" class="nav-link">
+                    Yedek Parça
+                </a>
+
+                <a href="#" class="nav-link">
+                    Lastik & İç Lastik
+                </a>
+
+                <a href="#" class="nav-link">
+                    Aksesuar
+                </a>
+
+                <a href="#" class="nav-link">
+                    Kampanyalar
+                </a>
+
+            </div>
+
+        </div>
+
+    </nav>
+
+
+    <!-- MOBILE NAV -->
+    <div class="mobile-nav">
+
+        <a asp-controller="Home" asp-action="Index">
+            <i class="fa-solid fa-house"></i>
+            <span>Ana Sayfa</span>
+        </a>
+
+        <a href="#">
+            <i class="fa-solid fa-layer-group"></i>
+            <span>Kategoriler</span>
+        </a>
+
+        <a href="#">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <span>Ara</span>
+        </a>
+
+        <a href="#">
+            <i class="fa-regular fa-user"></i>
+            <span>Hesabım</span>
+        </a>
+
+        <a href="#" class="mobile-cart">
+            <i class="fa-solid fa-basket-shopping"></i>
+            <span>Sepet</span>
+            <b>0</b>
+        </a>
+
+    </div>
+
+
+    <!-- PAGE CONTENT -->
+    <main class="main-content">
+
+        @RenderBody()
+
+    </main>
+
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+
+        <div class="container">
+
+            <div class="footer-main">
+
+                <!-- BRAND -->
+                <div class="footer-column footer-brand">
+
+                    <a class="footer-logo"
+                       asp-controller="Home"
+                       asp-action="Index">
+
+                        <div class="brand-icon">
+                            <i class="fa-solid fa-motorcycle"></i>
+                        </div>
+
+                        <span>EREN MOTOR</span>
+
+                    </a>
+
+                    <p>
+                        Bisiklet, elektrikli bisiklet, motosiklet ve
+                        yedek parça ihtiyaçlarınız için güvenilir alışveriş
+                        adresiniz.
+                    </p>
+
+                    <div class="social-links">
+
+                        <a href="#" aria-label="Instagram">
+                            <i class="fa-brands fa-instagram"></i>
+                        </a>
+
+                        <a href="#" aria-label="Facebook">
+                            <i class="fa-brands fa-facebook-f"></i>
+                        </a>
+
+                    </div>
+
+                </div>
+
+
+                <!-- QUICK LINKS -->
+                <div class="footer-column">
+
+                    <h4>Hızlı Menü</h4>
+
+                    <a asp-controller="Home" asp-action="Index">
+                        Ana Sayfa
+                    </a>
+
+                    <a href="#">
+                        Tüm Ürünler
+                    </a>
+
+                    <a href="#">
+                        Kampanyalar
+                    </a>
+
+                    <a href="#">
+                        Yeni Ürünler
+                    </a>
+
+                </div>
+
+
+                <!-- CUSTOMER -->
+                <div class="footer-column">
+
+                    <h4>Müşteri Hizmetleri</h4>
+
+                    <a href="#">
+                        Hesabım
+                    </a>
+
+                    <a href="#">
+                        Siparişlerim
+                    </a>
+
+                    <a href="#">
+                        Sıkça Sorulan Sorular
+                    </a>
+
+                    <a href="#">
+                        İletişim
+                    </a>
+
+                </div>
+
+
+                <!-- CONTACT -->
+                <div class="footer-column">
+
+                    <h4>İletişim</h4>
+
+                    <div class="footer-contact">
+
+                        <i class="fa-solid fa-location-dot"></i>
+
+                        <span>
+                            İstanbul, Türkiye
+                        </span>
+
+                    </div>
+
+                    <div class="footer-contact">
+
+                        <i class="fa-solid fa-phone"></i>
+
+                        <span>
+                            Müşteri Hizmetleri
+                        </span>
+
+                    </div>
+
+                    <div class="footer-contact">
+
+                        <i class="fa-solid fa-envelope"></i>
+
+                        <span>
+                            info@erenmotor.com
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="footer-bottom">
+
+                <span>
+                    © @DateTime.Now.Year Eren Motor. Tüm hakları saklıdır.
+                </span>
+
+                <div class="footer-bottom-links">
+
+                    <a href="#">Gizlilik Politikası</a>
+
+                    <a href="#">KVKK</a>
+
+                    <a href="#">Mesafeli Satış Sözleşmesi</a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </footer>
+
+
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+
+</body>
+</html>
+```

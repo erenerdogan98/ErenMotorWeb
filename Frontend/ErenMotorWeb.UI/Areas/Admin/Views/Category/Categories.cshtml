@@ -1,0 +1,132 @@
+﻿@model IEnumerable<ErenMotorWeb.UI.Core.Dtos.CategoryDto.ResultCategoryDto>
+
+@{
+    ViewData["Title"] = "Kategoriler";
+    Layout = "~/Areas/Admin/Views/Layout/AdminLayout.cshtml";
+}
+
+<div class="category-page">
+
+    <!-- Page Header -->
+    <div class="category-page-header">
+
+        <div class="category-page-title">
+            <h1>Kategoriler</h1>
+            <p>Ana kategori ve kategori yönetimi</p>
+        </div>
+
+        <a asp-area="Admin"
+           asp-controller="Category"
+           asp-action="AddCategory"
+           class="category-add-btn">
+
+            <i class="fa-solid fa-plus"></i>
+            Yeni Kategori
+        </a>
+
+    </div>
+
+
+    <!-- Categories -->
+    @if (Model != null && Model.Any())
+    {
+        <div class="category-grid">
+
+            @foreach (var category in Model)
+            {
+                <div class="category-card">
+
+                    <!-- Card Top -->
+                    <div class="category-card-top">
+
+                        <div class="category-icon">
+                            <i class="fa-solid fa-folder"></i>
+                        </div>
+
+                        @if (category.IsActive)
+                        {
+                            <span class="category-status active">
+                                Aktif
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="category-status passive">
+                                Pasif
+                            </span>
+                        }
+
+                </div>
+
+
+                <!-- Content -->
+
+                <h2 class="category-card-name">
+                    @category.Name
+                </h2>
+
+                <p class="category-card-description">
+                    @(string.IsNullOrWhiteSpace(category.Description)
+                                    ? "Bu kategori için açıklama bulunmuyor."
+                                    : category.Description)
+            </p>
+
+
+                    <!-- Footer -->
+
+                    <div class="category-card-footer">
+
+                        <div class="category-child-info">
+                            <i class="fa-solid fa-layer-group"></i>
+                            <span>Ana Kategori</span>
+                        </div>
+
+                        <div class="category-actions">
+
+                            <a asp-area="Admin"
+                               asp-controller="Category"
+                               asp-action="SubCategories"
+                               asp-route-parentId="@category.Id"
+                               asp-route-categoryName="@category.Name"
+                               class="category-action-btn"
+                               title="Alt Kategoriler">
+
+                                <i class="fa-solid fa-sitemap"></i>
+
+                            </a>
+
+                            <a href="#"
+                               class="category-action-btn"
+                               title="Düzenle">
+
+                                <i class="fa-solid fa-pen"></i>
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </div>
+                }
+
+        </div>
+    }
+    else
+    {
+        <div class="category-empty">
+
+            <div class="category-empty-icon">
+                <i class="fa-solid fa-folder-open"></i>
+            </div>
+
+            <h3>Henüz kategori bulunmuyor</h3>
+
+            <p>
+                Sisteme henüz herhangi bir ana kategori eklenmemiş.
+            </p>
+
+        </div>
+    }
+
+</div>

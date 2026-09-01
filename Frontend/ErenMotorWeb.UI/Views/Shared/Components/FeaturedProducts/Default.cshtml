@@ -1,0 +1,114 @@
+﻿@using ErenMotorWeb.UI.Core.Dtos.ProductDto
+@model IEnumerable<ResultProductDto>
+
+<section class="section products-section" id="products">
+
+    <div class="container">
+
+        <div class="section-header">
+
+            <div>
+                <span class="section-label">ÜRÜNLERİMİZ</span>
+
+                <h2 class="section-title">
+                    Öne Çıkan Ürünler
+                </h2>
+            </div>
+
+            <a asp-controller="Product"
+               asp-action="Index"
+               class="section-link">
+
+                Tüm Ürünleri Gör
+
+                <i class="fa-solid fa-arrow-right"></i>
+
+            </a>
+
+        </div>
+
+        <div class="product-grid">
+
+            @if (Model != null && Model.Any())
+            {
+                foreach (var product in Model)
+                {
+                    var image = product.Images?.FirstOrDefault();
+
+                    <article class="product-card">
+
+                        <div class="product-image">
+
+                            @if (image != null)
+                            {
+                                <img src="@image.ImageUrl"
+                                     alt="@product.ProductName"
+                                     loading="lazy" />
+                            }
+                            else
+                            {
+                                <div class="product-no-image">
+                                    <i class="fa-regular fa-image"></i>
+                                </div>
+                            }
+
+                        </div>
+
+                        <div class="product-content">
+
+                            @if (!string.IsNullOrEmpty(product.BrandName))
+                            {
+                                <span class="product-brand">
+                                    @product.BrandName
+                                </span>
+                            }
+
+                            <h3 class="product-name">
+                                @product.ProductName
+                            </h3>
+
+                            @if (!string.IsNullOrEmpty(product.ShortDescription))
+                            {
+                                <p class="product-description">
+                                    @product.ShortDescription
+                                </p>
+                            }
+
+                            <div class="product-footer">
+
+                                @if (product.Price.HasValue)
+                                {
+                                    <span class="product-price">
+                                        @product.Price.Value.ToString("N2") ₺
+                                    </span>
+                                }
+
+                                <a asp-controller="Product"
+                                   asp-action="Detail"
+                                   asp-route-slug="@product.Slug"
+                                   class="product-link"
+                                   aria-label="@product.ProductName ürününü incele">
+
+                                    <i class="fa-solid fa-arrow-right"></i>
+
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                    </article>
+                }
+            }
+            else
+            {
+                <div class="empty-products">
+                    <p>Şu anda gösterilecek ürün bulunmamaktadır.</p>
+                </div>
+            }
+
+        </div>
+
+    </div>
+
+</section>

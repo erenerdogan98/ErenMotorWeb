@@ -1,0 +1,121 @@
+﻿@{
+    ViewData["Title"] = "Ürünler";
+    Layout = "~/Areas/Admin/Views/Layout/AdminLayout.cshtml";
+}
+
+<div class="product-page">
+
+    <!-- Sayfa Başlığı -->
+    <div class="page-header">
+
+        <div class="page-header-left">
+            <h1>Ürünler</h1>
+            <p>Mağazanızdaki ürünleri buradan yönetebilirsiniz.</p>
+        </div>
+
+        <div class="page-header-right">
+            <a href="/Admin/Product/AddProduct"
+               class="btn btn-primary">
+
+                <span>+</span>
+                Yeni Ürün Ekle
+
+            </a>
+        </div>
+
+    </div>
+
+
+    <!-- Ürün İstatistikleri -->
+    <div class="product-stats">
+
+        <div class="stat-card">
+            <div class="stat-icon">📦</div>
+            <div class="stat-content">
+                <span class="stat-title">Toplam Ürün</span>
+                <strong>0</strong>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon">✓</div>
+            <div class="stat-content">
+                <span class="stat-title">Aktif Ürün</span>
+                <strong>0</strong>
+            </div>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon">⚠</div>
+            <div class="stat-content">
+                <span class="stat-title">Stokta Olmayan</span>
+                <strong>0</strong>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- Filtre Alanı -->
+    <div class="product-toolbar">
+
+        <div class="search-box">
+            <span class="search-icon">⌕</span>
+
+            <input type="text"
+                   placeholder="Ürün adı, barkod veya ürün kodu ara..." />
+        </div>
+
+        <div class="filter-area">
+
+            <select>
+                <option value="">Tüm Kategoriler</option>
+            </select>
+
+            <select>
+                <option value="">Tüm Durumlar</option>
+                <option value="active">Aktif</option>
+                <option value="passive">Pasif</option>
+            </select>
+
+        </div>
+
+    </div>
+
+
+    <!-- Ürün Listesi -->
+    <div class="product-list-card">
+
+        <div class="product-list-header">
+            <h2>Ürün Listesi</h2>
+
+            <span class="product-count">
+                0 ürün
+            </span>
+        </div>
+
+
+        <!-- Boş Durum -->
+        <div class="empty-products">
+
+            <div class="empty-icon">
+                📦
+            </div>
+
+            <h3>Henüz ürün bulunmuyor</h3>
+
+            <p>
+                Mağazanızda henüz kayıtlı bir ürün bulunmuyor.
+                İlk ürününüzü ekleyerek ürün yönetimine başlayabilirsiniz.
+            </p>
+
+            <div class="d-flex justify-content-end mt-3">
+                <a asp-area="Admin" asp-controller="Product" asp-action="AddProduct" class="btn btn-outline-primary">Yeni Ürün Ekle</a>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+

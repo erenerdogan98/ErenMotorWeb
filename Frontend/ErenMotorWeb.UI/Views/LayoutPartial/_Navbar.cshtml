@@ -1,0 +1,44 @@
+﻿<nav class="navigation">
+
+    <div class="container navigation-inner">
+
+        <div class="nav-menu">
+
+            <a asp-controller="Home"
+               asp-action="Index"
+               class="active">
+
+                Ana Sayfa
+
+            </a>
+
+            <a asp-controller="Product"
+               asp-action="Index">
+
+                Ürünler
+
+            </a>
+
+            @await Component.InvokeAsync("NavbarCategories")
+
+            <a href="#">
+                Hakkımızda
+            </a>
+
+            <a href="#">
+                İletişim
+            </a>
+
+        </div>
+
+        <div class="nav-contact">
+
+            <i class="fa-solid fa-headset"></i>
+
+            Size nasıl yardımcı olabiliriz?
+
+        </div>
+
+    </div>
+
+</nav>

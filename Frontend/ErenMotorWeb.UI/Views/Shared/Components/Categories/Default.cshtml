@@ -1,0 +1,89 @@
+﻿@using ErenMotorWeb.UI.Core.Dtos.CategoryDto
+@model IEnumerable<ResultCategoryDto>
+
+@{
+    var categories = Model?
+        .Where(x => x.IsActive && x.ParentCategoryId == null)
+        .ToList() ?? [];
+
+    var categoryImages = new[]
+    {
+        "https://images.unsplash.com/photo-1571068316344-75bc76f77890?auto=format&fit=crop&w=900&q=80",
+        "https://images.unsplash.com/photo-1571068316344-75bc76f77890?auto=format&fit=crop&w=900&q=80",
+        "https://images.unsplash.com/photo-1558981806-ec527fa84c39?auto=format&fit=crop&w=900&q=80",
+        "https://images.unsplash.com/photo-1502744688674-c619d1586c9e?auto=format&fit=crop&w=900&q=80"
+    };
+}
+
+<section class="section">
+
+    <div class="container">
+
+        <div class="section-header">
+
+            <div class="section-heading">
+
+                <small>
+                    Ürün Grupları
+                </small>
+
+                <h2>
+                    İhtiyacınız olanı keşfedin.
+                </h2>
+
+                <p>
+                    Ürünlerimizi kategori bazında inceleyin.
+                </p>
+
+            </div>
+
+            <a asp-controller="Category"
+               asp-action="Index"
+               class="section-link">
+
+                Tüm Kategoriler
+
+                <i class="fa-solid fa-arrow-right"></i>
+
+            </a>
+
+        </div>
+
+
+        <div class="category-grid">
+
+            @for (int i = 0; i < categories.Count; i++)
+            {
+                var category = categories[i];
+
+                var imageIndex = i % categoryImages.Length;
+
+                <a asp-controller="Category"
+                   asp-action="Detail"
+                   asp-route-slug="@category.Slug"
+                   class="category-card">
+
+                    <img src="@categoryImages[imageIndex]"
+                         alt="@category.Name"
+                         loading="lazy" />
+
+                    <div class="category-content">
+
+                        <span>
+                            Ürün Grubu
+                        </span>
+
+                        <h3>
+                            @category.Name
+                        </h3>
+
+                    </div>
+
+                </a>
+            }
+
+        </div>
+
+    </div>
+
+</section>

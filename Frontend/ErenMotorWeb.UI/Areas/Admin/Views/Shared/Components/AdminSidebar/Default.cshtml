@@ -1,0 +1,150 @@
+﻿<aside class="admin-sidebar">
+
+    <div class="admin-brand">
+
+        <div class="admin-brand-logo">
+            EM
+        </div>
+
+        <div class="admin-brand-info">
+
+            <strong>
+                Eren Motor
+            </strong>
+
+            <span>
+                Yönetim Paneli
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <div class="admin-sidebar-content">
+
+        <div class="sidebar-title">
+            ANA MENÜ
+        </div>
+
+        <a href="#"
+           class="sidebar-link active">
+
+            <span class="sidebar-icon">
+                <i class="fa-solid fa-house"></i>
+            </span>
+
+            <span>
+                Genel Bakış
+            </span>
+
+        </a>
+
+
+        <div class="sidebar-title">
+            KATALOG
+        </div>
+
+           @*  <a href=" /Admin/Product/Products/"
+               class="sidebar-link">
+
+                <span class="sidebar-icon">
+                    <i class="fa-solid fa-box"></i>
+                </span>
+
+                <span>
+                    Ürünler
+                </span>
+
+            </a> *@
+        <a asp-are="Admin" asp-controller="Product" asp-action="Products"
+           class="sidebar-link">
+
+            <span class="sidebar-icon">
+                <i class="fa-solid fa-box"></i>
+            </span>
+
+            <span>
+                Ürünler
+            </span>
+
+        </a>
+
+        <a a asp-are="Admin" asp-controller="Category" asp-action="Categories"
+           class="sidebar-link">
+
+            <span class="sidebar-icon">
+                <i class="fa-solid fa-layer-group"></i>
+            </span>
+
+            <span>
+                Kategoriler
+            </span>
+
+        </a>
+
+        <a href="#"
+           class="sidebar-link">
+
+            <span class="sidebar-icon">
+                <i class="fa-solid fa-tag"></i>
+            </span>
+
+            <span>
+                Markalar
+            </span>
+
+        </a>
+
+
+        <div class="sidebar-title">
+            YÖNETİM
+        </div>
+
+        <a href="#"
+           class="sidebar-link">
+
+            <span class="sidebar-icon">
+                <i class="fa-solid fa-users"></i>
+            </span>
+
+            <span>
+                Kullanıcılar
+            </span>
+
+        </a>
+
+        <a href="#"
+           class="sidebar-link">
+
+            <span class="sidebar-icon">
+                <i class="fa-solid fa-gear"></i>
+            </span>
+
+            <span>
+                Ayarlar
+            </span>
+
+        </a>
+
+    </div>
+
+
+    <div class="admin-sidebar-bottom">
+
+        <a href="/"
+           class="sidebar-link">
+
+            <span class="sidebar-icon">
+                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+            </span>
+
+            <span>
+                Siteye Git
+            </span>
+
+        </a>
+
+    </div>
+
+</aside>

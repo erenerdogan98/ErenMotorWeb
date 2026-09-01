@@ -1,0 +1,191 @@
+﻿@model IEnumerable<ErenMotorWeb.UI.Core.Dtos.CategoryDto.ResultCategoryDto>
+
+@{
+    ViewData["Title"] = "Alt Kategoriler";
+    Layout = "~/Areas/Admin/Views/Layout/AdminLayout.cshtml";
+}
+
+<div class="category-sub-page">
+
+    ```
+    <!-- Başlık -->
+    <div class="category-sub-header">
+
+        <div class="category-sub-header-left">
+
+            <a asp-area="Admin"
+               asp-controller="Category"
+               asp-action="Categories"
+               class="category-back-btn"
+               title="Kategorilere Dön">
+
+                <i class="fa-solid fa-arrow-left"></i>
+
+            </a>
+
+            <div class="category-sub-title">
+
+                <h2>Alt Kategoriler</h2>
+
+                <p>
+                    Kategoriye bağlı alt kategorileri yönetin.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Ana Kategori -->
+    <div class="parent-category-card">
+
+        <div class="parent-category-info">
+
+            <div class="parent-category-icon">
+                <i class="fa-solid fa-folder"></i>
+            </div>
+
+            <div>
+
+                <div class="parent-category-label">
+                    Ana Kategori
+                </div>
+
+                <div class="parent-category-name">
+                    @ViewBag.ParentCategoryName
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Alt Kategoriler -->
+    <div class="sub-category-section">
+
+        <div class="sub-category-section-header">
+
+            <div class="sub-category-section-title">
+
+                <h3>
+                    Alt Kategoriler
+                </h3>
+
+            </div>
+
+            <span class="sub-category-count">
+                @(Model?.Count() ?? 0)
+            </span>
+
+        </div>
+
+
+        @if (Model != null && Model.Any())
+        {
+            <!-- Alt Kategori Listesi -->
+
+            <div class="sub-category-list">
+
+                @foreach (var category in Model)
+                {
+                    <div class="sub-category-item">
+
+                        <!-- Sol Taraf -->
+
+                        <div class="sub-category-left">
+
+                            <div class="sub-category-icon">
+                                <i class="fa-solid fa-folder"></i>
+                            </div>
+
+                            <div class="sub-category-info">
+
+                                <div class="sub-category-name">
+                                    @category.Name
+                                </div>
+
+                                @if (!string.IsNullOrWhiteSpace(category.Description))
+                                {
+                                    <div class="sub-category-slug">
+                                        @category.Description
+                                    </div>
+                                }
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- Sağ Taraf -->
+
+                        <div class="sub-category-actions">
+
+                            @if (category.IsActive)
+                            {
+                                <span class="category-status active">
+
+                                    <span class="category-status-dot"></span>
+
+                                    Aktif
+
+                                </span>
+                            }
+                            else
+                            {
+                                <span class="category-status passive">
+
+                                    <span class="category-status-dot"></span>
+
+                                    Pasif
+
+                                </span>
+                            }
+
+
+                            <!-- Düzenle -->
+
+                            <a href="#"
+                               class="category-action-btn"
+                               title="Düzenle">
+
+                                <i class="fa-solid fa-pen"></i>
+
+                            </a>
+
+                        </div>
+
+                    </div>
+                }
+
+            </div>
+        }
+        else
+        {
+            <!-- Alt Kategori Yok -->
+
+            <div class="sub-category-empty">
+
+                <div class="sub-category-empty-icon">
+
+                    <i class="fa-solid fa-folder-open"></i>
+
+                </div>
+
+                <h4>
+                    Alt kategori bulunamadı
+                </h4>
+
+                <p>
+                    Bu kategoriye bağlı alt kategoriler henüz bulunmuyor.
+                </p>
+
+            </div>
+        }
+
+    </div>
+
+</div>
