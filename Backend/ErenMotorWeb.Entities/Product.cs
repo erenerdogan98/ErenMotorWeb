@@ -36,6 +36,11 @@ namespace ErenMotorWeb.Entities
 
         public DateTime? UpdatedAt { get; set; }
 
+        public int SafetyStock { get; set; } = 0;
+
+        [Timestamp]
+        public byte[]? RowVersion { get; set; }
+
         // Navigation Properties
 
         public virtual Category? Category { get; set; } 
@@ -43,6 +48,8 @@ namespace ErenMotorWeb.Entities
         public virtual Brand? Brand { get; set; } 
 
         public ICollection<ProductImage>? Images { get; set; }
-            
+
+        public ICollection<ProductMapping>? ProductMappings { get; set; }
+
     }
 }
