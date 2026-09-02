@@ -6,14 +6,14 @@ using ErenMotorWeb.Dto.ServiceResponseDto;
 using ErenMotorWeb.Entities;
 using Serilog;
 using System.Linq.Expressions;
-using System.Threading.Tasks;
+
 
 namespace ErenMotorWeb.BLL.Concrete
 {
     public class GenericManager<T, TCreateDto, TUpdateDto, TResultDto>(IGenericDAL<T> genericDAL, IMapper mapper) : IGenericService<TCreateDto, TUpdateDto, TResultDto> where T : class, IEntityBase, new() where TCreateDto : class
     {
         private static string EntityName => typeof(T).Name; // for using logging.
-        public async Task<ApiResponseDto<string>> TAddAsync(TCreateDto createDto)
+        public virtual async Task<ApiResponseDto<string>> TAddAsync(TCreateDto createDto)
         {
             try
             {
