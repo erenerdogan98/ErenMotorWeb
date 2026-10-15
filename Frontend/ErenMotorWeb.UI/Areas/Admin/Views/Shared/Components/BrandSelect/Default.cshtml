@@ -1,0 +1,20 @@
+﻿@using ErenMotorWeb.UI.Core.Dtos.BrandDto
+@model IEnumerable<ResultBrandDto>
+
+<select class="form-control"
+        id="brandId"
+        name="BrandId">
+
+    <option value="0">
+        Marka seçin
+    </option>
+
+    @foreach (var brand in Model.Where(x => x.IsActive))
+    {
+        <option value="@brand.Id"
+                selected="@(brand.Id == (int?)ViewBag.SelectedBrandId)">
+            @brand.Name
+        </option>
+    }
+
+</select>

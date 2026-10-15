@@ -1,0 +1,172 @@
+﻿@model ErenMotorWeb.UI.Core.Dtos.CategoryDto.CreateCategoryDto
+
+@{
+    ViewData["Title"] = "Kategori Ekle";
+    Layout = "~/Areas/Admin/Views/Layout/AdminLayout.cshtml";
+}
+
+<div class="category-create-page">
+
+    <div class="page-header">
+
+        <div class="page-header-left">
+            <h1>Kategori Ekle</h1>
+            <p>Yeni ana kategori veya alt kategori ekleyebilirsiniz.</p>
+        </div>
+
+        <div class="page-header-right">
+            <a asp-area="Admin"
+               asp-controller="Category"
+               asp-action="Categories"
+               class="btn btn-secondary">
+
+                ← Kategorilere Dön
+
+            </a>
+        </div>
+
+    </div>
+
+
+    <div class="form-card">
+
+        <form asp-area="Admin"
+              asp-controller="Category"
+              asp-action="AddCategory"
+              method="post">
+
+            <div asp-validation-summary="ModelOnly"
+                 class="validation-summary"></div>
+
+
+            <div class="form-grid">
+
+                <!-- KATEGORİ ADI -->
+                <div class="form-group">
+
+                    <label asp-for="Name">
+                        Kategori Adı
+                    </label>
+
+                    <input asp-for="Name"
+                           class="form-control"
+                           placeholder="Örn: Bisiklet Lastikleri" />
+
+                    <span asp-validation-for="Name"
+                          class="validation-message"></span>
+
+                </div>
+
+
+                <!-- SLUG -->
+                <div class="form-group">
+
+                    <label asp-for="Slug">
+                        Slug
+                    </label>
+
+                    <input asp-for="Slug"
+                           class="form-control"
+                           placeholder="bisiklet-lastikleri" />
+
+                    <span asp-validation-for="Slug"
+                          class="validation-message"></span>
+
+                </div>
+
+
+                <!-- ÜST KATEGORİ -->
+                <div class="form-group">
+
+                    <label asp-for="ParentCategoryId">
+                        Üst Kategori
+                    </label>
+
+                    <select asp-for="ParentCategoryId"
+                            class="form-control">
+
+                        <option value="">
+                            Ana Kategori
+                        </option>
+
+                        @if (ViewBag.Categories != null)
+                        {
+                            foreach (var category in ViewBag.Categories)
+                            {
+                                <option value="@category.Id">
+                                    @category.Name
+                                </option>
+                            }
+                        }
+
+                    </select>
+
+                    <small class="form-text">
+                        Ana kategori eklemek için "Ana Kategori" seçili bırakın.
+                    </small>
+
+                    <span asp-validation-for="ParentCategoryId"
+                          class="validation-message"></span>
+
+                </div>
+
+
+                <!-- AKTİF -->
+                <div class="form-group">
+
+                    <label>
+                        Durum
+                    </label>
+
+                    <div class="checkbox-wrapper">
+
+                        <input asp-for="IsActive"
+                               type="checkbox" />
+
+                        <label asp-for="IsActive">
+                            Kategori aktif olsun
+                        </label>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- AÇIKLAMA -->
+            <div class="form-group">
+
+                <label asp-for="Description">
+                    Açıklama
+                </label>
+
+                <textarea asp-for="Description"
+                          class="form-control"
+                          rows="5"
+                          placeholder="Kategori hakkında kısa açıklama yazabilirsiniz."></textarea>
+
+                <span asp-validation-for="Description"
+                      class="validation-message"></span>
+
+            </div>
+
+
+            <div class="form-actions">
+
+                <button type="submit"
+                        class="btn btn-primary">
+
+                    <i class="fa-solid fa-plus"></i>
+
+                    Kategori Ekle
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>

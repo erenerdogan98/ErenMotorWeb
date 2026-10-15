@@ -1,0 +1,20 @@
+﻿@using ErenMotorWeb.UI.Core.Dtos.OriginDto
+@model IEnumerable<ResultOriginDto>
+
+<select class="form-control"
+        id="originId"
+        name="OriginId">
+
+    <option value="">
+        Menşe seçin
+    </option>
+
+    @foreach (var origin in Model)
+    {
+        <option value="@origin.Id"
+                selected="@(origin.Id == (int?)ViewBag.SelectedOriginId)">
+            @origin.Name (@origin.Code)
+        </option>
+    }
+
+</select>

@@ -27,7 +27,7 @@ namespace ErenMotorWeb.API.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateProductImage(
             [FromBody] CreateProductImageDto createProductImageDto)
-        {
+        {            
             var response = await productImageService.TAddAsync(createProductImageDto);
 
             return CreateApiResponse(response);

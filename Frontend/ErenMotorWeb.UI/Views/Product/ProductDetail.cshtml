@@ -1,0 +1,267 @@
+﻿@model ErenMotorWeb.UI.Core.Dtos.ProductDto.ResultProductDto
+
+@{
+    ViewData["Title"] = Model?.ProductName ?? "Ürün Detayı";
+    Layout = "~/Views/Layout/UILayout.cshtml";
+}
+
+<div class="product-detail-page">
+
+    <div class="container">
+
+        <!-- Breadcrumb -->
+        <div class="product-breadcrumb">
+
+            <a asp-controller="Home" asp-action="Index">
+                Ana Sayfa
+            </a>
+
+            <i class="fa-solid fa-chevron-right"></i>
+
+            <a asp-controller="Product" asp-action="Index">
+                Ürünler
+            </a>
+
+            <i class="fa-solid fa-chevron-right"></i>
+
+            <span>
+                @Model?.ProductName
+            </span>
+
+        </div>
+
+
+        <!-- Product Detail -->
+        <section class="product-detail-section">
+
+            <div class="product-detail-grid">
+
+                <!-- LEFT : IMAGE -->
+                <div class="product-detail-image-wrapper">
+
+                    @if (Model?.IsFeatured == true)
+                    {
+                        <span class="product-detail-badge">
+                            ÖNE ÇIKAN
+                        </span>
+                    }
+
+                    <div class="product-detail-image">
+
+                        @if (!string.IsNullOrEmpty(Model?.MainImageUrl))
+                        {
+                            <img src="@Model.MainImageUrl"
+                                 alt="@Model.ProductName" />
+                        }
+                        else
+                        {
+                            <div class="product-no-image">
+                                <i class="fa-regular fa-image"></i>
+                                <span>Görsel bulunamadı</span>
+                            </div>
+                        }
+
+                    </div>
+
+                </div>
+
+
+                <!-- RIGHT : INFORMATION -->
+                <div class="product-detail-info">
+
+                    @if (!string.IsNullOrEmpty(Model?.BrandName))
+                    {
+                        <div class="product-detail-brand">
+                            @Model.BrandName
+                        </div>
+                    }
+
+                    <h1 class="product-detail-title">
+                        @Model?.ProductName
+                    </h1>
+
+
+                    @if (!string.IsNullOrEmpty(Model?.ShortDescription))
+                    {
+                        <p class="product-detail-short-description">
+                            @Model.ShortDescription
+                        </p>
+                    }
+
+
+                    <!-- Price -->
+                    <div class="product-detail-price">
+
+                        @Model.Price.Value.ToString("N2") TL
+
+                    </div>
+
+
+                    <!-- Stock -->
+                    <div class="product-detail-stock">
+
+                        @if (Model?.Stock > 0)
+                        {
+                            <span class="stock-status stock-in">
+                                <i class="fa-solid fa-circle-check"></i>
+                                Stokta
+                            </span>
+
+                           @*  <span class="stock-count">
+                                @Model.Stock adet mevcut
+                            </span> *@
+                        }
+                        else
+                        {
+                            <span class="stock-status stock-out">
+                                <i class="fa-solid fa-circle-xmark"></i>
+                                Stokta Yok
+                            </span>
+                        }
+
+                    </div>
+
+
+                    <!-- Product Codes -->
+                    <div class="product-detail-codes">
+
+                        @if (!string.IsNullOrEmpty(Model?.Barcode))
+                        {
+                            <div class="product-code-row">
+
+                                <span>
+                                    Barkod
+                                </span>
+
+                                <strong>
+                                    @Model.Barcode
+                                </strong>
+
+                            </div>
+                        }
+
+
+                        @if (!string.IsNullOrEmpty(Model?.Sku))
+                        {
+                            <div class="product-code-row">
+
+                                <span>
+                                    SKU
+                                </span>
+
+                                <strong>
+                                    @Model.Sku
+                                </strong>
+
+                            </div>
+                        }
+
+                    </div>
+
+
+                    <!-- Action -->
+                    <div class="product-detail-actions">
+
+                        @if (Model?.Stock > 0)
+                        {
+                            <a href="#"
+                               class="product-detail-button">
+
+                                <i class="fa-solid fa-cart-shopping"></i>
+
+                                Satın Al
+
+                            </a>
+                        }
+                        else
+                        {
+                            <button type="button"
+                                    class="product-detail-button disabled"
+                                    disabled>
+
+                                <i class="fa-solid fa-ban"></i>
+
+                                Stokta Yok
+
+                            </button>
+                        }
+
+                    </div>
+
+
+                    <!-- Trust Info -->
+                    <div class="product-detail-features">
+
+                        <div class="detail-feature">
+
+                            <i class="fa-solid fa-truck"></i>
+
+                            <div>
+                                <strong>Hızlı Gönderim</strong>
+                                <span>Siparişleriniz hızlıca hazırlanır.</span>
+                            </div>
+
+                        </div>
+
+
+                        <div class="detail-feature">
+
+                            <i class="fa-solid fa-shield-halved"></i>
+
+                            <div>
+                                <strong>Güvenli Alışveriş</strong>
+                                <span>Güvenli ve sorunsuz alışveriş.</span>
+                            </div>
+
+                        </div>
+
+
+                        <div class="detail-feature">
+
+                            <i class="fa-solid fa-headset"></i>
+
+                            <div>
+                                <strong>Destek</strong>
+                                <span>Ürün hakkında bizimle iletişime geçebilirsiniz.</span>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- Description -->
+        @if (!string.IsNullOrWhiteSpace(Model?.Description))
+        {
+            <section class="product-description-section">
+
+                <div class="product-description-header">
+
+                    <span>
+                        Ürün Bilgileri
+                    </span>
+
+                    <h2>
+                        Ürün Açıklaması
+                    </h2>
+
+                </div>
+
+
+                <div class="product-description">
+
+                    @Html.Raw(Model.Description)
+
+                </div>
+
+            </section>
+        }
+
+    </div>
+</div>

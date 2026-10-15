@@ -1,6 +1,16 @@
-﻿@{
+﻿@model IEnumerable<ErenMotorWeb.UI.Core.Dtos.ProductDto.ResultProductDto>
+
+@{
     ViewData["Title"] = "Ürünler";
     Layout = "~/Areas/Admin/Views/Layout/AdminLayout.cshtml";
+
+    var totalProducts = (int)ViewBag.TotalProducts;
+    var activeProducts = (int)ViewBag.ActiveProducts;
+    var outOfStockProducts = (int)ViewBag.OutOfStockProducts;
+
+    var currentPage = (int)ViewBag.CurrentPage;
+    var totalPages = (int)ViewBag.TotalPages;
+    var pageSize = (int)ViewBag.PageSize;
 }
 
 <div class="product-page">
@@ -14,13 +24,17 @@
         </div>
 
         <div class="page-header-right">
-            <a href="/Admin/Product/AddProduct"
+
+            <a asp-area="Admin"
+               asp-controller="Product"
+               asp-action="AddProduct"
                class="btn btn-primary">
 
                 <span>+</span>
                 Yeni Ürün Ekle
 
             </a>
+
         </div>
 
     </div>
@@ -30,27 +44,65 @@
     <div class="product-stats">
 
         <div class="stat-card">
-            <div class="stat-icon">📦</div>
-            <div class="stat-content">
-                <span class="stat-title">Toplam Ürün</span>
-                <strong>0</strong>
+
+            <div class="stat-icon">
+                📦
             </div>
+
+            <div class="stat-content">
+
+                <span class="stat-title">
+                    Toplam Ürün
+                </span>
+
+                <strong>
+                    @totalProducts
+                </strong>
+
+            </div>
+
         </div>
 
-        <div class="stat-card">
-            <div class="stat-icon">✓</div>
-            <div class="stat-content">
-                <span class="stat-title">Aktif Ürün</span>
-                <strong>0</strong>
-            </div>
-        </div>
 
         <div class="stat-card">
-            <div class="stat-icon">⚠</div>
-            <div class="stat-content">
-                <span class="stat-title">Stokta Olmayan</span>
-                <strong>0</strong>
+
+            <div class="stat-icon">
+                ✓
             </div>
+
+            <div class="stat-content">
+
+                <span class="stat-title">
+                    Aktif Ürün
+                </span>
+
+                <strong>
+                    @activeProducts
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <div class="stat-icon">
+                ⚠
+            </div>
+
+            <div class="stat-content">
+
+                <span class="stat-title">
+                    Stokta Olmayan
+                </span>
+
+                <strong>
+                    @outOfStockProducts
+                </strong>
+
+            </div>
+
         </div>
 
     </div>
@@ -60,22 +112,60 @@
     <div class="product-toolbar">
 
         <div class="search-box">
-            <span class="search-icon">⌕</span>
+
+            <span class="search-icon">
+                ⌕
+            </span>
 
             <input type="text"
-                   placeholder="Ürün adı, barkod veya ürün kodu ara..." />
+                   id="productSearch"
+                   placeholder="Ürün adı veya barkod ara..." />
+
+            <button type="button"
+                    id="searchProductButton"
+                    class="search-button">
+
+                Ara
+
+            </button>
+
+            <button type="button"
+                    id="clearProductSearchButton"
+                    class="clear-search-button"
+                    style="display:none;">
+
+                Temizle
+
+            </button>
+
         </div>
+
 
         <div class="filter-area">
 
-            <select>
-                <option value="">Tüm Kategoriler</option>
+            <select id="categoryFilter">
+
+                <option value="">
+                    Tüm Kategoriler
+                </option>
+
             </select>
 
-            <select>
-                <option value="">Tüm Durumlar</option>
-                <option value="active">Aktif</option>
-                <option value="passive">Pasif</option>
+
+            <select id="statusFilter">
+
+                <option value="">
+                    Tüm Durumlar
+                </option>
+
+                <option value="active">
+                    Aktif
+                </option>
+
+                <option value="passive">
+                    Pasif
+                </option>
+
             </select>
 
         </div>
@@ -84,38 +174,326 @@
 
 
     <!-- Ürün Listesi -->
-    <div class="product-list-card">
+    <div id="productTableContainer">
 
-        <div class="product-list-header">
-            <h2>Ürün Listesi</h2>
+        @await Html.PartialAsync(
+        "_ProductTable",
+                Model)
 
-            <span class="product-count">
-                0 ürün
-            </span>
-        </div>
+    </div>
 
 
-        <!-- Boş Durum -->
-        <div class="empty-products">
+    <!-- Sayfalama -->
+    <div id="paginationContainer">
 
-            <div class="empty-icon">
-                📦
+        @if (totalPages > 1)
+                {
+        <div class="pagination-wrapper">
+
+            <div class="pagination-info">
+
+                @{
+                                var startProduct =
+                                ((currentPage - 1) * pageSize) + 1;
+
+                var endProduct =
+                Math.Min(
+                currentPage * pageSize,
+                totalProducts);
+                                }
+
+                @startProduct - @endProduct
+                / @totalProducts ürün
+
             </div>
 
-            <h3>Henüz ürün bulunmuyor</h3>
 
-            <p>
-                Mağazanızda henüz kayıtlı bir ürün bulunmuyor.
-                İlk ürününüzü ekleyerek ürün yönetimine başlayabilirsiniz.
-            </p>
+            <div class="pagination">
 
-            <div class="d-flex justify-content-end mt-3">
-                <a asp-area="Admin" asp-controller="Product" asp-action="AddProduct" class="btn btn-outline-primary">Yeni Ürün Ekle</a>
+                <!-- İlk Sayfa -->
+                @if (currentPage > 1)
+                {
+                    <a asp-area="Admin"
+                       asp-controller="Product"
+                       asp-action="Products"
+                       asp-route-page="1"
+                       class="page-link">
+
+                        «
+
+                    </a>
+                }
+
+
+                <!-- Önceki -->
+                @if (currentPage > 1)
+                {
+                    <a asp-area="Admin"
+                       asp-controller="Product"
+                       asp-action="Products"
+                       asp-route-page="@(currentPage - 1)"
+                       class="page-link">
+
+                        ‹ Önceki
+
+                    </a>
+                }
+
+
+                @{
+                    var startPage =
+                    Math.Max(1, currentPage - 2);
+
+                    var endPage =
+                    Math.Min(
+                    totalPages,
+                    currentPage + 2);
+                }
+
+
+                <!-- Baştaki 1 -->
+                @if (startPage > 1)
+                {
+                    <a asp-area="Admin"
+                       asp-controller="Product"
+                       asp-action="Products"
+                       asp-route-page="1"
+                       class="page-link">
+
+                        1
+
+                    </a>
+
+                    @if (startPage > 2)
+                    {
+                        <span class="pagination-dots">
+                            ...
+                        </span>
+                    }
+                }
+
+
+                <!-- Sayfa Numaraları -->
+                @for (int i = startPage; i <= endPage; i++)
+                {
+                    <a asp-area="Admin"
+                       asp-controller="Product"
+                       asp-action="Products"
+                       asp-route-page="@i"
+                       class="page-link @(i == currentPage ? "active" : "")">
+
+                        @i
+
+                    </a>
+                }
+
+
+                <!-- Sondaki Son Sayfa -->
+                @if (endPage < totalPages)
+                {
+                    @if (endPage < totalPages - 1)
+                    {
+                        <span class="pagination-dots">
+                            ...
+                        </span>
+                    }
+
+                    <a asp-area="Admin"
+                       asp-controller="Product"
+                       asp-action="Products"
+                       asp-route-page="@totalPages"
+                       class="page-link">
+
+                        @totalPages
+
+                    </a>
+                }
+
+
+                <!-- Sonraki -->
+                @if (currentPage < totalPages)
+                {
+                    <a asp-area="Admin"
+                       asp-controller="Product"
+                       asp-action="Products"
+                       asp-route-page="@(currentPage + 1)"
+                       class="page-link">
+
+                        Sonraki ›
+
+                    </a>
+                }
+
+
+                <!-- Son Sayfa -->
+                @if (currentPage < totalPages)
+                {
+                    <a asp-area="Admin"
+                       asp-controller="Product"
+                       asp-action="Products"
+                       asp-route-page="@totalPages"
+                       class="page-link">
+
+                        »
+
+                    </a>
+                }
+
             </div>
 
         </div>
+                }
 
     </div>
 
 </div>
 
+
+@section Scripts
+{
+    <script>
+
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const searchInput =
+                document.getElementById("productSearch");
+
+            const searchButton =
+                document.getElementById("searchProductButton");
+
+            const clearButton =
+                document.getElementById("clearProductSearchButton");
+
+            const tableContainer =
+                document.getElementById("productTableContainer");
+
+            const paginationContainer =
+                document.getElementById("paginationContainer");
+
+
+            async function searchProducts() {
+
+                const search =
+                    searchInput.value.trim();
+
+                if (!search) {
+                    return;
+                }
+
+
+                const url =
+                    '@Url.Action("SearchProducts", "Product", new { area = "Admin" })'
+                    + '?search='
+                    + encodeURIComponent(search);
+
+
+                try {
+
+                    searchButton.disabled = true;
+
+                    searchButton.textContent =
+                        "Aranıyor...";
+
+
+                    const response =
+                        await fetch(url);
+
+
+                    if (!response.ok) {
+
+                        throw new Error(
+                            "Arama işlemi başarısız.");
+
+                    }
+
+
+                    const html =
+                        await response.text();
+
+
+                    tableContainer.innerHTML =
+                        html;
+
+
+                    /*
+                     * Arama sonucunda normal ürün
+                     * pagination'ını gizliyoruz.
+                     *
+                     * Çünkü SearchProducts şu anda
+                     * ayrı bir partial döndürüyor.
+                     */
+                    paginationContainer.style.display =
+                        "none";
+
+
+                    clearButton.style.display =
+                        "inline-flex";
+
+                }
+                catch (error) {
+
+                    console.error(error);
+
+                    alert(
+                        "Ürün aranırken bir hata oluştu.");
+
+                }
+                finally {
+
+                    searchButton.disabled = false;
+
+                    searchButton.textContent =
+                        "Ara";
+
+                }
+
+            }
+
+
+            async function clearSearch() {
+
+                /*
+                 * Aramayı temizlediğimizde
+                 * Products sayfasına geri dönüyoruz.
+                 *
+                 * Böylece pagination da tekrar
+                 * doğru şekilde oluşturuluyor.
+                 */
+
+                window.location.href =
+                    '@Url.Action("Products", "Product", new { area = "Admin" })';
+
+            }
+
+
+            searchButton.addEventListener(
+                "click",
+                searchProducts
+            );
+
+
+            clearButton.addEventListener(
+                "click",
+                clearSearch
+            );
+
+
+            searchInput.addEventListener(
+                "keydown",
+                function (event) {
+
+                    if (event.key === "Enter") {
+
+                        event.preventDefault();
+
+                        searchProducts();
+
+                    }
+
+                }
+            );
+
+        });
+
+    </script>
+}

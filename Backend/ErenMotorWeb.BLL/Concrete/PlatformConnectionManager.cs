@@ -7,7 +7,6 @@ using ErenMotorWeb.Dto.ServiceResponseDto;
 using ErenMotorWeb.Entities;
 using ErenMotorWeb.Entities.Enums;
 using Serilog;
-using Microsoft.AspNetCore.DataProtection;
 using ErenMotorWeb.BLL.Helper;
 
 namespace ErenMotorWeb.BLL.Concrete

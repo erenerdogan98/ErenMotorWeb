@@ -70,6 +70,8 @@ namespace ErenMotorWeb.UI.Core.Extensions
             services.AddTransient<ICategoryService, CategoryService>();
             services.AddTransient<IProductService, ProductService>();
             services.AddTransient<IProductImageService, ProductImageService>();
+            services.AddTransient<IOriginService, OriginService>();
+            services.AddTransient<ISupplierService, SupplierService>();
          
         }
     }

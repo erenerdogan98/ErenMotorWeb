@@ -197,6 +197,123 @@ namespace ErenMotorWeb.DAL.Migrations
                     b.ToTable("Categories");
                 });
 
+            modelBuilder.Entity("ErenMotorWeb.Entities.Origin", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Origins");
+                });
+
+            modelBuilder.Entity("ErenMotorWeb.Entities.PlatformConnection", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ApiKeyEncrypted")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ApiSecretEncrypted")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastOrderFetchAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("LastSyncAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PlatformType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("SupplierId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PlatformConnections");
+                });
+
+            modelBuilder.Entity("ErenMotorWeb.Entities.ProcessedOrder", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("OrderStatus")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PlatformConnectionId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PlatformOrderId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("PlatformOrderLineId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("StockDeducted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("StockRestored")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.HasIndex("PlatformConnectionId", "PlatformOrderId", "ProductId")
+                        .IsUnique();
+
+                    b.ToTable("ProcessedOrders");
+                });
+
             modelBuilder.Entity("ErenMotorWeb.Entities.Product", b =>
                 {
                     b.Property<int>("Id")
@@ -215,6 +332,9 @@ namespace ErenMotorWeb.DAL.Migrations
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
+                    b.Property<int>("Color")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
@@ -224,8 +344,21 @@ namespace ErenMotorWeb.DAL.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("IsFeatured")
                         .HasColumnType("bit");
+
+                    b.Property<string>("ModelCode")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("OriginId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("OriginId1")
+                        .HasColumnType("int");
 
                     b.Property<decimal?>("Price")
                         .HasColumnType("decimal(18,2)");
@@ -233,6 +366,14 @@ namespace ErenMotorWeb.DAL.Migrations
                     b.Property<string>("ProductName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
+
+                    b.Property<int>("SafetyStock")
+                        .HasColumnType("int");
 
                     b.Property<string>("ShortDescription")
                         .HasColumnType("nvarchar(max)");
@@ -247,6 +388,9 @@ namespace ErenMotorWeb.DAL.Migrations
                     b.Property<int>("Stock")
                         .HasColumnType("int");
 
+                    b.Property<int>("SupplierId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime2");
 
@@ -259,8 +403,13 @@ namespace ErenMotorWeb.DAL.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.HasIndex("Slug")
-                        .IsUnique();
+                    b.HasIndex("OriginId");
+
+                    b.HasIndex("OriginId1");
+
+                    b.HasIndex("Slug");
+
+                    b.HasIndex("SupplierId");
 
                     b.ToTable("Products");
                 });
@@ -297,6 +446,172 @@ namespace ErenMotorWeb.DAL.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("ProductImages");
+                });
+
+            modelBuilder.Entity("ErenMotorWeb.Entities.ProductMapping", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AllocatedStock")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("CurrentStockOnPlatform")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("LastSyncedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PlatformBarcode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PlatformConnectionId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PlatformProductId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TargetStock")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PlatformConnectionId");
+
+                    b.HasIndex("ProductId", "PlatformConnectionId")
+                        .IsUnique();
+
+                    b.ToTable("ProductMappings");
+                });
+
+            modelBuilder.Entity("ErenMotorWeb.Entities.StockMovement", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Change")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("NewStock")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Note")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PreviousStock")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("RelatedProcessedOrderId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Source")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("StockMovements");
+                });
+
+            modelBuilder.Entity("ErenMotorWeb.Entities.Supplier", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("CompanyName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("EmailOrKep")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Suppliers");
+                });
+
+            modelBuilder.Entity("ErenMotorWeb.Entities.SyncLog", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ErrorMessage")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("PlatformConnectionId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("StockAfter")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("StockBefore")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SyncType")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PlatformConnectionId");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("SyncLogs");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
@@ -412,6 +727,25 @@ namespace ErenMotorWeb.DAL.Migrations
                     b.Navigation("ParentCategory");
                 });
 
+            modelBuilder.Entity("ErenMotorWeb.Entities.ProcessedOrder", b =>
+                {
+                    b.HasOne("ErenMotorWeb.Entities.PlatformConnection", "PlatformConnection")
+                        .WithMany()
+                        .HasForeignKey("PlatformConnectionId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("ErenMotorWeb.Entities.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("PlatformConnection");
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("ErenMotorWeb.Entities.Product", b =>
                 {
                     b.HasOne("ErenMotorWeb.Entities.Brand", "Brand")
@@ -426,9 +760,29 @@ namespace ErenMotorWeb.DAL.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("ErenMotorWeb.Entities.Origin", "Origin")
+                        .WithMany()
+                        .HasForeignKey("OriginId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("ErenMotorWeb.Entities.Origin", null)
+                        .WithMany("Products")
+                        .HasForeignKey("OriginId1");
+
+                    b.HasOne("ErenMotorWeb.Entities.Supplier", "Supplier")
+                        .WithMany("Products")
+                        .HasForeignKey("SupplierId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.Navigation("Brand");
 
                     b.Navigation("Category");
+
+                    b.Navigation("Origin");
+
+                    b.Navigation("Supplier");
                 });
 
             modelBuilder.Entity("ErenMotorWeb.Entities.ProductImage", b =>
@@ -438,6 +792,53 @@ namespace ErenMotorWeb.DAL.Migrations
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("ErenMotorWeb.Entities.ProductMapping", b =>
+                {
+                    b.HasOne("ErenMotorWeb.Entities.PlatformConnection", "PlatformConnection")
+                        .WithMany("ProductMappings")
+                        .HasForeignKey("PlatformConnectionId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("ErenMotorWeb.Entities.Product", "Product")
+                        .WithMany("ProductMappings")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("PlatformConnection");
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("ErenMotorWeb.Entities.StockMovement", b =>
+                {
+                    b.HasOne("ErenMotorWeb.Entities.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("ErenMotorWeb.Entities.SyncLog", b =>
+                {
+                    b.HasOne("ErenMotorWeb.Entities.PlatformConnection", "PlatformConnection")
+                        .WithMany()
+                        .HasForeignKey("PlatformConnectionId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("ErenMotorWeb.Entities.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("PlatformConnection");
 
                     b.Navigation("Product");
                 });
@@ -505,9 +906,26 @@ namespace ErenMotorWeb.DAL.Migrations
                     b.Navigation("SubCategories");
                 });
 
+            modelBuilder.Entity("ErenMotorWeb.Entities.Origin", b =>
+                {
+                    b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("ErenMotorWeb.Entities.PlatformConnection", b =>
+                {
+                    b.Navigation("ProductMappings");
+                });
+
             modelBuilder.Entity("ErenMotorWeb.Entities.Product", b =>
                 {
                     b.Navigation("Images");
+
+                    b.Navigation("ProductMappings");
+                });
+
+            modelBuilder.Entity("ErenMotorWeb.Entities.Supplier", b =>
+                {
+                    b.Navigation("Products");
                 });
 #pragma warning restore 612, 618
         }

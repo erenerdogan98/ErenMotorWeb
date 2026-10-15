@@ -1,0 +1,105 @@
+﻿@model IEnumerable<ErenMotorWeb.UI.Core.Dtos.ProductDto.ResultProductDto>
+
+<section class="section products-section">
+
+    <div class="container">
+
+        <div class="section-header">
+
+            <div class="section-heading">
+
+                <small>
+                    Ürünler
+                </small>
+
+                <h2>
+                    Ürünlerimizi keşfedin.
+                </h2>
+
+                <p>
+                    Stoklarımızda bulunan ürünleri inceleyin.
+                </p>
+
+            </div>
+
+            <a asp-controller="Product"
+               asp-action="Index"
+               class="section-link">
+
+                Tüm Ürünler
+
+                <i class="fa-solid fa-arrow-right"></i>
+
+            </a>
+
+        </div>
+
+
+        <div class="product-grid">
+
+            @foreach (var product in Model)
+            {
+                <article class="product-card">
+
+                    <div class="product-image">
+
+                        @if (product.IsFeatured)
+                        {
+                            <span class="product-tag">
+                                ÖNE ÇIKAN
+                            </span>
+                        }
+
+                        @if (!string.IsNullOrEmpty(product.MainImageUrl))
+                        {
+                            <img src="@product.MainImageUrl"
+                                 alt="@product.ProductName" />
+                        }
+                        else
+                        {
+                            <img src="~/images/no-image.png"
+                                 alt="@product.ProductName" />
+                        }
+
+                    </div>
+
+
+                    <div class="product-info">
+
+                        <div class="product-brand">
+                            @product.BrandName
+                        </div>
+
+                        <div class="product-name">
+                            @product.ProductName
+                        </div>
+
+                        <div class="product-meta">
+
+                            <span>
+                                @product.Price?.ToString("N2") TL
+                            </span>
+
+                            <a asp-controller="Product"
+                               asp-action="ProductDetail"
+                               asp-route-id="@product.Id"
+                               class="product-detail">
+
+                                İncele
+
+                                <i class="fa-solid fa-arrow-right"></i>
+
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </article>
+            }
+
+        </div>
+
+    </div>
+
+</section>

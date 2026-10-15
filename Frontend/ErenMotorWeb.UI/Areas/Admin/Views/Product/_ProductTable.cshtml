@@ -1,0 +1,192 @@
+﻿@model IEnumerable<ErenMotorWeb.UI.Core.Dtos.ProductDto.ResultProductDto>
+
+@{
+    var productList = Model?.ToList()
+        ?? new List<ErenMotorWeb.UI.Core.Dtos.ProductDto.ResultProductDto>();
+}
+
+<div class="product-list-card">
+
+    <div class="product-list-header">
+
+        <h2>Ürün Listesi</h2>
+
+        <span class="product-count">
+            @productList.Count ürün
+        </span>
+
+    </div>
+
+    @if (productList.Any())
+    {
+        <div class="product-table-wrapper">
+
+            <table class="product-table">
+
+                <thead>
+                    <tr>
+                        <th>Görsel</th>
+                        <th>Ürün</th>
+                        <th>Barkod</th>
+                        <th>Stok</th>
+                        <th>Durum</th>
+                        <th>İşlemler</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    @foreach (var product in productList)
+                    {
+                        <tr>
+
+                            <td class="image-column">
+
+                                @if (!string.IsNullOrWhiteSpace(product.MainImageUrl))
+                                {
+                                    <a href="@product.MainImageUrl"
+                                       target="_blank"
+                                       rel="noopener">
+
+                                        <img src="@product.MainImageUrl"
+                                             alt="@product.ProductName"
+                                             loading="lazy"
+                                             class="product-list-image"
+                                             style="width:52px;height:52px;object-fit:cover;border-radius:8px;" />
+
+                                    </a>
+                                }
+                                else
+                                {
+                                    <div class="product-list-image product-image-empty">
+                                        <span>🖼</span>
+                                    </div>
+                                }
+
+                        </td>
+
+                        <td class="product-column">
+
+                            <div class="product-name">
+
+                                <strong title="@product.ProductName">
+                                    @product.ProductName
+                                </strong>
+
+                            </div>
+
+                        </td>
+
+                        <td class="barcode-column">
+
+                            <span class="product-barcode">
+                                @(string.IsNullOrWhiteSpace(product.Barcode)
+                                                            ? "-"
+                                                            : product.Barcode)
+                        </span>
+
+                            </td>
+
+                            <td class="stock-column">
+
+                        @if (product.Stock > 0)
+                                {
+                                    <span class="stock-value">
+                                        @product.Stock
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="stock-empty">
+                                        0
+                                    </span>
+                                }
+
+                            </td>
+
+                            <td class="status-column">
+
+                                @if (product.IsActive)
+                                {
+                                    <span class="status-badge status-active">
+                                        Aktif
+                                    </span>
+                                }
+                                else
+                                {
+                                    <span class="status-badge status-passive">
+                                        Pasif
+                                    </span>
+                                }
+
+                            </td>
+
+                            <td class="actions-column">
+
+                                <div class="product-actions">
+
+                                    <a asp-area="Admin"
+                                       asp-controller="Product"
+                                       asp-action="UpdateProduct"
+                                       asp-route-id="@product.Id"
+                                       class="action-btn">
+                                        Güncelle
+                                    </a>
+
+                                    <a asp-area="Admin"
+                                       asp-controller="ProductImage"
+                                       asp-action="AddProductImage"
+                                       asp-route-productId="@product.Id"
+                                       class="action-btn">
+                                        Görsel
+                                    </a>
+
+                                    <form asp-area="Admin"
+                                          asp-controller="Product"
+                                          asp-action="RemoveProduct"
+                                          asp-route-id="@product.Id"
+                                          method="post"
+                                          style="display:inline;"
+                                          onsubmit="return confirm('Bu ürünü kaldırmak istediğinize emin misiniz?');">
+
+                                        <input type="hidden"
+                                               name="page"
+                                               value="@ViewBag.CurrentPage" />
+
+                                        <button type="submit"
+                                                class="btn btn-danger btn-sm">
+                                            Kaldır
+                                        </button>
+
+                                    </form>
+                                </div>
+
+                            </td>
+
+                        </tr>
+                    }
+
+                </tbody>
+
+            </table>
+
+        </div>
+    }
+    else
+    {
+        <div class="empty-products">
+
+            <div class="empty-icon">
+                🔍
+            </div>
+
+            <h3>Ürün bulunamadı</h3>
+
+            <p>
+                Arama kriterine uygun ürün bulunamadı.
+            </p>
+
+        </div>
+    }
+
+</div>

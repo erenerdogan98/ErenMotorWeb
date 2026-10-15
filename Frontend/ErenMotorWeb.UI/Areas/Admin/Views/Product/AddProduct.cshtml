@@ -38,7 +38,8 @@
           asp-action="AddProduct"
           method="post">
 
-        <!-- Genel Bilgiler -->
+
+        <!-- GENEL BİLGİLER -->
         <div class="form-card">
 
             <div class="form-card-header">
@@ -49,6 +50,7 @@
             <div class="form-card-body">
 
                 <div class="form-group full-width">
+
                     <label asp-for="ProductName">
                         Ürün Adı
                     </label>
@@ -60,12 +62,14 @@
                     <span asp-validation-for="ProductName"
                           class="field-validation">
                     </span>
+
                 </div>
 
 
                 <div class="form-row">
 
                     <div class="form-group">
+
                         <label asp-for="Slug">
                             Slug
                         </label>
@@ -81,38 +85,47 @@
                         <small>
                             URL içerisinde kullanılacak ürün adresi.
                         </small>
+
                     </div>
 
 
                     <div class="form-group">
-                        <label asp-for="Sku">
-                            SKU
+
+                        <label asp-for="ModelCode">
+                            Model Kodu
                         </label>
 
-                        <input asp-for="Sku"
+                        <input asp-for="ModelCode"
                                class="form-control"
                                placeholder="Örn: TM-2910" />
 
-                        <span asp-validation-for="Sku"
+                        <span asp-validation-for="ModelCode"
                               class="field-validation">
                         </span>
+
+                        <small>
+                            Aynı ürünün farklı renklerini gruplamak için kullanılır.
+                        </small>
+
                     </div>
 
                 </div>
 
 
                 <div class="form-group">
-                    <label asp-for="Barcode">
-                        Barkod
+
+                    <label>
+                        Kısa Açıklama
                     </label>
 
-                    <input asp-for="Barcode"
-                           class="form-control"
-                           placeholder="Barkod numarasını girin" />
+                    <textarea asp-for="ShortDescription"
+                              class="form-control textarea-short"
+                              placeholder="Ürün hakkında kısa bir açıklama..."></textarea>
 
-                    <span asp-validation-for="Barcode"
+                    <span asp-validation-for="ShortDescription"
                           class="field-validation">
                     </span>
+
                 </div>
 
             </div>
@@ -120,16 +133,17 @@
         </div>
 
 
-        <!-- Kategori ve Marka -->
+        <!-- KATEGORİ / MARKA / TEDARİKÇİ / MENŞE -->
         <div class="form-card">
 
             <div class="form-card-header">
-                <h2>Kategori ve Marka</h2>
-                <p>Ürünün hangi kategoriye ve markaya ait olduğunu seçin.</p>
+                <h2>Kategori ve Tedarik Bilgileri</h2>
+                <p>Ürünün kategori, marka, tedarikçi ve menşe bilgilerini seçin.</p>
             </div>
 
             <div class="form-card-body">
 
+                <!-- Kategori ve Marka -->
                 <div class="form-row">
 
                     <div class="form-group">
@@ -138,14 +152,7 @@
                             Kategori
                         </label>
 
-                        <select asp-for="CategoryId"
-                                class="form-control">
-
-                            <option value="0">
-                                Kategori seçin
-                            </option>
-
-                        </select>
+                        @await Component.InvokeAsync("CategorySelect")
 
                         <span asp-validation-for="CategoryId"
                               class="field-validation">
@@ -160,14 +167,7 @@
                             Marka
                         </label>
 
-                        <select asp-for="BrandId"
-                                class="form-control">
-
-                            <option value="0">
-                                Marka seçin
-                            </option>
-
-                        </select>
+                        @await Component.InvokeAsync("BrandSelect")
 
                         <span asp-validation-for="BrandId"
                               class="field-validation">
@@ -177,42 +177,19 @@
 
                 </div>
 
-            </div>
 
-        </div>
-
-
-        <!-- Satış Bilgileri -->
-        <div class="form-card">
-
-            <div class="form-card-header">
-                <h2>Satış Bilgileri</h2>
-                <p>Ürünün fiyat ve stok bilgilerini belirleyin.</p>
-            </div>
-
-            <div class="form-card-body">
-
+                <!-- Tedarikçi ve Menşe -->
                 <div class="form-row">
 
                     <div class="form-group">
 
-                        <label asp-for="Price">
-                            Satış Fiyatı
+                        <label asp-for="SupplierId">
+                            Tedarikçi
                         </label>
 
-                        <div class="input-with-suffix">
+                        @await Component.InvokeAsync("SupplierSelect")
 
-                            <input asp-for="Price"
-                                   type="number"
-                                   step="0.01"
-                                   class="form-control"
-                                   placeholder="0.00" />
-
-                            <span>₺</span>
-
-                        </div>
-
-                        <span asp-validation-for="Price"
+                        <span asp-validation-for="SupplierId"
                               class="field-validation">
                         </span>
 
@@ -221,17 +198,13 @@
 
                     <div class="form-group">
 
-                        <label asp-for="Stock">
-                            Stok
+                        <label asp-for="OriginId">
+                            Menşe
                         </label>
 
-                        <input asp-for="Stock"
-                               type="number"
-                               min="0"
-                               class="form-control"
-                               placeholder="0" />
+                        @await Component.InvokeAsync("OriginSelect")
 
-                        <span asp-validation-for="Stock"
+                        <span asp-validation-for="OriginId"
                               class="field-validation">
                         </span>
 
@@ -244,33 +217,179 @@
         </div>
 
 
-        <!-- Açıklamalar -->
+        <!-- VARYANTLAR -->
+        <div class="form-card">
+
+            <div class="form-card-header">
+
+                <div style="display:flex; justify-content:space-between; align-items:center; gap:20px;">
+
+                    <div>
+                        <h2>Ürün Varyantları</h2>
+                        <p>
+                            Ürünün renk, barkod, SKU, fiyat ve stok bilgilerini girin.
+                        </p>
+                    </div>
+
+                    <button type="button"
+                            class="btn btn-secondary"
+                            id="addVariantBtn">
+                        + Varyant Ekle
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <div class="form-card-body">
+
+                <div id="variantsContainer">
+
+                    <!-- İlk varyant -->
+                    <div class="variant-row"
+                         data-index="0">
+
+                        <div class="variant-row-header">
+
+                            <strong>
+                                Varyant 1
+                            </strong>
+
+                        </div>
+
+
+                        <div class="form-row">
+
+                            <!-- Renk -->
+                            <div class="form-group">
+
+                                <label>
+                                    Renk
+                                </label>
+
+                                <select name="Variants[0].Color"
+                                        class="form-control">
+
+                                    <option value="0">
+                                        Renk Seçin
+                                    </option>
+
+                                    <option value="1">Kırmızı</option>
+                                    <option value="2">Sarı</option>
+                                    <option value="3">Mavi</option>
+                                    <option value="4">Yeşil</option>
+                                    <option value="5">Siyah</option>
+                                    <option value="6">Beyaz</option>
+                                    <option value="7">Gri</option>
+                                    <option value="8">Turuncu</option>
+                                    <option value="9">Mor</option>
+                                    <option value="10">Pembe</option>
+                                    <option value="11">Kahverengi</option>
+                                    <option value="12">Lacivert</option>
+                                    <option value="13">Bej</option>
+                                    <option value="14">Gümüş</option>
+                                    <option value="15">Altın</option>
+                                    <option value="16">Şeffaf</option>
+                                    <option value="17">Turkuaz</option>
+
+                                </select>
+
+                            </div>
+
+
+                            <!-- Barkod -->
+                            <div class="form-group">
+
+                                <label>
+                                    Barkod
+                                </label>
+
+                                <input type="text"
+                                       name="Variants[0].Barcode"
+                                       class="form-control"
+                                       placeholder="Barkod numarası" />
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="form-row">
+
+                            <!-- SKU -->
+                            <div class="form-group">
+
+                                <label>
+                                    SKU
+                                </label>
+
+                                <input type="text"
+                                       name="Variants[0].Sku"
+                                       class="form-control"
+                                       placeholder="Örn: TM-2910-SYH" />
+
+                            </div>
+
+
+                            <!-- Fiyat -->
+                            <div class="form-group">
+
+                                <label>
+                                    Satış Fiyatı
+                                </label>
+
+                                <div class="input-with-suffix">
+
+                                    <input type="number"
+                                           name="Variants[0].Price"
+                                           step="0.01"
+                                           min="0"
+                                           class="form-control"
+                                           placeholder="0.00" />
+
+                                    <span>₺</span>
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- Stok -->
+                            <div class="form-group">
+
+                                <label>
+                                    Stok
+                                </label>
+
+                                <input type="number"
+                                       name="Variants[0].Stock"
+                                       min="0"
+                                       class="form-control"
+                                       placeholder="0" />
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- AÇIKLAMA -->
         <div class="form-card">
 
             <div class="form-card-header">
                 <h2>Ürün Açıklaması</h2>
-                <p>Ürünün kısa ve detaylı açıklamasını girin.</p>
+                <p>Ürünün detaylı açıklamasını girin.</p>
             </div>
 
             <div class="form-card-body">
-
-                <div class="form-group">
-
-                    <label asp-for="ShortDescription">
-                        Kısa Açıklama
-                    </label>
-
-                    <textarea asp-for="ShortDescription"
-                              class="form-control textarea-short"
-                              placeholder="Ürün hakkında kısa bir açıklama...">
-                    </textarea>
-
-                    <span asp-validation-for="ShortDescription"
-                          class="field-validation">
-                    </span>
-
-                </div>
-
 
                 <div class="form-group">
 
@@ -280,8 +399,7 @@
 
                     <textarea asp-for="Description"
                               class="form-control textarea-large"
-                              placeholder="Ürünün detaylı açıklamasını girin...">
-                    </textarea>
+                              placeholder="Ürünün detaylı açıklamasını girin..."></textarea>
 
                     <span asp-validation-for="Description"
                           class="field-validation">
@@ -294,7 +412,7 @@
         </div>
 
 
-        <!-- Ürün Durumu -->
+        <!-- ÜRÜN DURUMU -->
         <div class="form-card">
 
             <div class="form-card-header">
@@ -315,6 +433,7 @@
 
                         <span>
                             <strong>Aktif Ürün</strong>
+
                             <small>
                                 Ürün mağazada aktif olarak yayınlansın.
                             </small>
@@ -332,6 +451,7 @@
 
                         <span>
                             <strong>Öne Çıkan Ürün</strong>
+
                             <small>
                                 Ürün öne çıkan ürünler arasında gösterilsin.
                             </small>
@@ -346,7 +466,7 @@
         </div>
 
 
-        <!-- Form Actions -->
+        <!-- FORM ACTIONS -->
         <div class="form-actions">
 
             <a asp-area="Admin"
@@ -372,5 +492,174 @@
 
     <partial name="_ValidationScriptsPartial" />
 
-}
+    <script>
 
+        let variantIndex = 1;
+
+        document
+            .getElementById("addVariantBtn")
+            .addEventListener("click", function () {
+
+                const container =
+                    document.getElementById("variantsContainer");
+
+                const variant = document.createElement("div");
+
+                variant.className = "variant-row";
+
+                variant.setAttribute(
+                    "data-index",
+                    variantIndex
+                );
+
+                variant.innerHTML = `
+
+                    <div class="variant-row-header"
+                         style="display:flex; justify-content:space-between; align-items:center;">
+
+                        <strong>
+                            Varyant ${variantIndex + 1}
+                        </strong>
+
+                        <button type="button"
+                                class="btn btn-secondary remove-variant">
+                            Varyantı Sil
+                        </button>
+
+                    </div>
+
+
+                    <div class="form-row">
+
+                        <div class="form-group">
+
+                            <label>
+                                Renk
+                            </label>
+
+                            <select name="Variants[${variantIndex}].Color"
+                                    class="form-control">
+
+                                <option value="0">
+                                    Renk Seçin
+                                </option>
+
+                                <option value="1">Kırmızı</option>
+                                <option value="2">Sarı</option>
+                                <option value="3">Mavi</option>
+                                <option value="4">Yeşil</option>
+                                <option value="5">Siyah</option>
+                                <option value="6">Beyaz</option>
+                                <option value="7">Gri</option>
+                                <option value="8">Turuncu</option>
+                                <option value="9">Mor</option>
+                                <option value="10">Pembe</option>
+                                <option value="11">Kahverengi</option>
+                                <option value="12">Lacivert</option>
+                                <option value="13">Bej</option>
+                                <option value="14">Gümüş</option>
+                                <option value="15">Altın</option>
+                                <option value="16">Şeffaf</option>
+                                <option value="17">Turkuaz</option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label>
+                                Barkod
+                            </label>
+
+                            <input type="text"
+                                   name="Variants[${variantIndex}].Barcode"
+                                   class="form-control"
+                                   placeholder="Barkod numarası" />
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-row">
+
+                        <div class="form-group">
+
+                            <label>
+                                SKU
+                            </label>
+
+                            <input type="text"
+                                   name="Variants[${variantIndex}].Sku"
+                                   class="form-control"
+                                   placeholder="Örn: TM-2910-SYH" />
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label>
+                                Satış Fiyatı
+                            </label>
+
+                            <div class="input-with-suffix">
+
+                                <input type="number"
+                                       name="Variants[${variantIndex}].Price"
+                                       step="0.01"
+                                       min="0"
+                                       class="form-control"
+                                       placeholder="0.00" />
+
+                                <span>₺</span>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label>
+                                Stok
+                            </label>
+
+                            <input type="number"
+                                   name="Variants[${variantIndex}].Stock"
+                                   min="0"
+                                   class="form-control"
+                                   placeholder="0" />
+
+                        </div>
+
+                    </div>
+                `;
+
+                container.appendChild(variant);
+
+                variantIndex++;
+
+            });
+
+
+        document
+            .getElementById("variantsContainer")
+            .addEventListener("click", function (e) {
+
+                if (e.target.classList.contains("remove-variant")) {
+
+                    const variant =
+                        e.target.closest(".variant-row");
+
+                    variant.remove();
+
+                }
+
+            });
+
+    </script>
+
+}

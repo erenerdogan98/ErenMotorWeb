@@ -1,8 +1,28 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Eren Motor";
+    Layout = "~/Views/Layout/UILayout.cshtml";
 }
+
+
+<!-- HERO -->
+@await Html.PartialAsync("~/Views/LayoutPartial/_Hero.cshtml")
+
+
+<!-- KATEGORİLER -->
 @await Component.InvokeAsync("Categories")
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core"> deneme building Web apps with ASP.NET Core</a>.</p>
-</div>
+
+
+<!-- ÖNE ÇIKAN ÜRÜNLER -->
+@await Component.InvokeAsync("FeaturedProducts")
+
+
+<!-- AKTİF ÜRÜNLER -->
+@await Component.InvokeAsync("ActiveProducts")
+
+
+<!-- HAKKIMIZDA -->
+@await Html.PartialAsync("~/Views/LayoutPartial/_About.cshtml")
+
+
+<!-- CTA -->
+@await Html.PartialAsync("~/Views/LayoutPartial/_CTA.cshtml")

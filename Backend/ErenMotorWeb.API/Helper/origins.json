@@ -1,0 +1,70 @@
+﻿[
+  {
+    "name": "Türkiye",
+    "code": "TR"
+  },
+  {
+    "name": "Çin",
+    "code": "CN"
+  },
+  {
+    "name": "Almanya",
+    "code": "DE"
+  },
+  {
+    "name": "Japonya",
+    "code": "JP"
+  },
+  {
+    "name": "İtalya",
+    "code": "IT"
+  },
+  {
+    "name": "Fransa",
+    "code": "FR"
+  },
+  {
+    "name": "Hollanda",
+    "code": "NL"
+  },
+  {
+    "name": "İspanya",
+    "code": "ES"
+  },
+  {
+    "name": "Polonya",
+    "code": "PL"
+  },
+  {
+    "name": "Birleşik Krallık",
+    "code": "GB"
+  },
+  {
+    "name": "Amerika Birleşik Devletleri",
+    "code": "US"
+  },
+  {
+    "name": "Güney Kore",
+    "code": "KR"
+  },
+  {
+    "name": "Tayvan",
+    "code": "TW"
+  },
+  {
+    "name": "Pakistan",
+    "code": "PK"
+  },
+  {
+    "name": "Bangladeş",
+    "code": "BD"
+  },
+  {
+    "name": "Sırbistan",
+    "code": "RS"
+  },
+  {
+    "name": "Çekya",
+    "code": "CZ"
+  }
+]

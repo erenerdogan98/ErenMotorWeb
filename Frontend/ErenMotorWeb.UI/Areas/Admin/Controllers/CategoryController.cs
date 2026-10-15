@@ -1,4 +1,5 @@
 ﻿using ErenMotorWeb.UI.Controllers;
+using ErenMotorWeb.UI.Core.Dtos.CategoryDto;
 using ErenMotorWeb.UI.Core.Services.Abstract;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,7 +12,7 @@ namespace ErenMotorWeb.UI.Areas.Admin.Controllers
         [HttpGet("Categories")]
         public async Task<IActionResult> Categories()
         {
-            var response = await categoryService.GetAllAsync("Categories/main-categories");
+            var response = await categoryService.GetAllAsync();
             var values = response.Data;
             var success = response.Success;
             if(success)
@@ -29,6 +30,36 @@ namespace ErenMotorWeb.UI.Areas.Admin.Controllers
             if (success)
                 return View(values);
             return HandleErrorResponse(response, "Categories", values);
+        }
+
+        [HttpGet("AddCategory")]
+        public async Task<IActionResult> AddCategory()
+        {
+            var response = await categoryService.GetAllAsync();
+
+            if (response.Success)
+            {
+                ViewBag.Categories = response.Data
+                    .Where(x => x.IsActive &&
+                                x.ParentCategoryId == null)
+                    .OrderBy(x => x.Name)
+                    .ToList();
+            }
+
+            return View();
+        }
+
+        [HttpPost("AddCategory")]
+        public async Task<IActionResult> AddCategory(CreateCategoryDto createCategory)
+        {
+            var response = await categoryService.CreateAsync(createCategory);
+            var success = response.Success;
+            if (response.Success)
+                return RedirectToAction("Categories");
+            return HandleErrorResponse(
+               response,
+               "AddCategory",
+               createCategory);
         }
     }
 }

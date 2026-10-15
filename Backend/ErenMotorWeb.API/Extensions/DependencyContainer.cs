@@ -10,7 +10,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
@@ -40,6 +39,7 @@ namespace ErenMotorWeb.API.Extensions
                 )
             );
 
+            services.AddHttpClient();
 
             // ============================================
             // IDENTITY
@@ -114,7 +114,14 @@ namespace ErenMotorWeb.API.Extensions
             services.AddScoped<IProductDAL, EFProductRepository>();
             services.AddScoped<IProductImageDAL, EFProductImageRepository>();
             services.AddScoped<IAuthDAL, EFAuthRepository>();
-
+            services.AddScoped<IPlatformConnectionDAL, EFPlatformConnectionRepository>();
+            services.AddScoped<IProcessedOrderDAL, EFProcessedOrderRepository>();
+            services.AddScoped<IProductImageDAL, EFProductImageRepository>();
+            services.AddScoped<IProductMappingDAL, EFProductMappingRepository>();
+            services.AddScoped<IStockMovementDAL, EFStockMovementRepository>();
+            services.AddScoped<ISyncLogDAL, EFSyncLogRepository>();
+            services.AddScoped<ISupplierDAL, EFSupplierRepository>();
+            services.AddScoped<IOriginDAL, EFOriginRepository>();
             #endregion
 
 
@@ -128,7 +135,16 @@ namespace ErenMotorWeb.API.Extensions
             services.AddScoped<ICategoryService, CategoryManager>();
             services.AddScoped<IProductService, ProductManager>();
             services.AddScoped<IProductImageService, ProductImageManager>();
-
+            services.AddScoped<IPlatformConnectionService, PlatformConnectionManager>();
+            services.AddScoped<IProcessedOrderService, ProcessedOrderManager>();
+            services.AddScoped<IProductImageService, ProductImageManager>();
+            services.AddScoped<IProductMappingService, ProductMappingManager>();
+            services.AddScoped<IStockMovementService, StockMovementManager>();
+            services.AddScoped<ISyncLogService, SyncLogManager>();
+            services.AddScoped<ITrendyolProductService, TrendyolProductManager>();
+            services.AddScoped<ISupplierService, SupplierManager>();
+            services.AddScoped<IOriginService, OriginManager>();
+            services.AddScoped<PlatformCredentialProtector>();
             #endregion
 
 

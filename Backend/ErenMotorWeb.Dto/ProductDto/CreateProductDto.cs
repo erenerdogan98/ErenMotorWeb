@@ -6,17 +6,11 @@
 
         public string Slug { get; set; } = string.Empty;
 
-        public string Barcode { get; set; } = string.Empty;
-
-        public string? Sku { get; set; }
+        public string ModelCode { get; set; } = string.Empty;
 
         public string? ShortDescription { get; set; }
 
         public string? Description { get; set; }
-
-        public decimal? Price { get; set; }
-
-        public int Stock { get; set; }
 
         public bool IsActive { get; set; } = true;
 
@@ -25,5 +19,12 @@
         public int CategoryId { get; set; }
 
         public int BrandId { get; set; }
+
+        public int SupplierId { get; set; }
+
+        public int? OriginId { get; set; }
+
+        public List<CreateProductVariantDto> Variants { get; set; }
+            = [];
     }
 }

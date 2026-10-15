@@ -26,7 +26,9 @@ namespace ErenMotorWeb.DAL.Concrete
         public DbSet<ProcessedOrder> ProcessedOrders { get; set; }
         public DbSet<StockMovement> StockMovements { get; set; }
         public DbSet<SyncLog> SyncLogs { get; set; }
+        public DbSet<Supplier> Suppliers { get; set; }
 
+        public DbSet<Origin> Origins { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -168,8 +170,7 @@ namespace ErenMotorWeb.DAL.Concrete
                 .IsUnique();
 
             modelBuilder.Entity<Product>()
-                .HasIndex(x => x.Slug)
-                .IsUnique();
+                .HasIndex(x => x.Slug);
 
             modelBuilder.Entity<Brand>()
                 .HasIndex(x => x.Slug)
@@ -189,6 +190,27 @@ namespace ErenMotorWeb.DAL.Concrete
             modelBuilder.Entity<ProcessedOrder>()
                 .HasIndex(x => new { x.PlatformConnectionId, x.PlatformOrderId, x.ProductId })
                 .IsUnique();
+
+            // SUPPLIER - PRODUCT
+            // Bir Supplier'ın birçok Product'ı olabilir.
+            // Bir Product yalnızca bir Supplier'a bağlıdır.
+            // =====================================================
+            modelBuilder.Entity<Supplier>()
+                .HasMany(x => x.Products)
+                .WithOne(x => x.Supplier)
+                .HasForeignKey(x => x.SupplierId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // ORIGIN - PRODUCT
+            // Bir Origin'in birçok Product'ı olabilir.
+            // Bir Product'ın bir Origin'i olabilir.
+            // OriginId nullable olduğu için ilişki opsiyoneldir.
+            // =====================================================
+            modelBuilder.Entity<Origin>()
+                .HasMany<Product>()
+                .WithOne(x => x.Origin)
+                .HasForeignKey(x => x.OriginId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

@@ -1,0 +1,46 @@
+﻿@using ErenMotorWeb.UI.Core.Dtos.CategoryDto
+@model IEnumerable<ResultCategoryDto>
+
+<select class="form-control"
+        id="categoryId"
+        name="CategoryId">
+
+    <option value="0">
+        Kategori seçin
+    </option>
+
+    @{
+        var categories = Model
+        .Where(x => x.IsActive)
+        .ToList();
+
+        var mainCategories = categories
+        .Where(x => x.ParentCategoryId == null)
+        .ToList();
+    }
+
+    @foreach (var mainCategory in mainCategories)
+    {
+        <optgroup label="@mainCategory.Name">
+
+            @foreach (var subCategory in categories
+                    .Where(x => x.ParentCategoryId == mainCategory.Id))
+            {
+                <option value="@subCategory.Id"
+                        selected="@(subCategory.Id == (int?)ViewBag.SelectedCategoryId)">
+                    @subCategory.Name
+                </option>
+
+                @foreach (var childCategory in categories
+                        .Where(x => x.ParentCategoryId == subCategory.Id))
+                {
+                    <option value="@childCategory.Id"
+                            selected="@(childCategory.Id == (int?)ViewBag.SelectedCategoryId)">
+                        └─ @childCategory.Name
+                    </option>
+                }
+            }
+
+        </optgroup>
+    }
+</select>

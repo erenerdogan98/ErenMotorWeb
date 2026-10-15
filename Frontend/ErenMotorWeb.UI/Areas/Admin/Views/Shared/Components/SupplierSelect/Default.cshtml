@@ -1,0 +1,20 @@
+﻿@using ErenMotorWeb.UI.Core.Dtos.SupplierDto
+@model IEnumerable<ResultSupplierDto>
+
+<select class="form-control"
+        id="supplierId"
+        name="SupplierId">
+
+    <option value="0">
+        Tedarikçi seçin
+    </option>
+
+    @foreach (var supplier in Model)
+    {
+        <option value="@supplier.Id"
+                selected="@(supplier.Id == (int?)ViewBag.SelectedSupplierId)">
+            @supplier.CompanyName
+        </option>
+    }
+
+</select>

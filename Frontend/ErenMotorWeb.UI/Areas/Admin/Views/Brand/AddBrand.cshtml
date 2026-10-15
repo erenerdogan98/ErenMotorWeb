@@ -1,0 +1,170 @@
+﻿@model ErenMotorWeb.UI.Core.Dtos.BrandDto.CreateBrandDto
+
+@{
+    ViewData["Title"] = "Yeni Marka Ekle";
+    Layout = "~/Areas/Admin/Views/Layout/AdminLayout.cshtml";
+}
+
+<div class="product-create-page">
+
+    <!-- Sayfa Başlığı -->
+    <div class="page-header">
+
+        <div class="page-header-left">
+            <h1>Yeni Marka Ekle</h1>
+            <p>Mağazanıza yeni bir marka ekleyin.</p>
+        </div>
+
+        <div class="page-header-right">
+            <a asp-area="Admin"
+               asp-controller="Brand"
+               asp-action="Brands"
+               class="btn btn-secondary">
+                ← Markalara Dön
+            </a>
+        </div>
+
+    </div>
+
+
+    <!-- Validation -->
+    <div asp-validation-summary="ModelOnly"
+         class="validation-summary">
+    </div>
+
+
+    <form asp-area="Admin"
+          asp-controller="Brand"
+          asp-action="AddBrand"
+          method="post">
+
+        <!-- Marka Bilgileri -->
+        <div class="form-card">
+
+            <div class="form-card-header">
+                <h2>Marka Bilgileri</h2>
+                <p>Markanın temel bilgilerini girin.</p>
+            </div>
+
+            <div class="form-card-body">
+
+                <div class="form-group full-width">
+
+                    <label asp-for="Name">
+                        Marka Adı
+                    </label>
+
+                    <input asp-for="Name"
+                           class="form-control"
+                           placeholder="Örn: Panda Tire" />
+
+                    <span asp-validation-for="Name"
+                          class="field-validation">
+                    </span>
+
+                </div>
+
+
+                <div class="form-group full-width">
+
+                    <label asp-for="Slug">
+                        Slug
+                    </label>
+
+                    <input asp-for="Slug"
+                           class="form-control"
+                           placeholder="panda-tire" />
+
+                    <span asp-validation-for="Slug"
+                          class="field-validation">
+                    </span>
+
+                    <small class="form-help">
+                        URL içerisinde kullanılacak marka adresi.
+                    </small>
+
+                </div>
+
+
+                <div class="form-group full-width">
+
+                    <label asp-for="Description">
+                        Açıklama
+                    </label>
+
+                    <textarea asp-for="Description"
+                              class="form-control textarea-short"
+                              placeholder="Marka hakkında kısa bir açıklama..."></textarea>
+
+                    <span asp-validation-for="Description"
+                          class="field-validation">
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Marka Durumu -->
+        <div class="form-card">
+
+            <div class="form-card-header">
+                <h2>Marka Durumu</h2>
+                <p>Markanın mağazadaki görünürlüğünü belirleyin.</p>
+            </div>
+
+            <div class="form-card-body">
+
+                <div class="switch-group">
+
+                    <label class="switch-label">
+
+                        <input asp-for="IsActive"
+                               type="checkbox" />
+
+                        <span class="switch"></span>
+
+                        <span>
+                            <strong>Aktif Marka</strong>
+                            <small>
+                                Marka mağazada aktif olarak yayınlansın.
+                            </small>
+                        </span>
+
+                    </label>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Form Actions -->
+        <div class="form-actions">
+
+            <a asp-area="Admin"
+               asp-controller="Brand"
+               asp-action="Brands"
+               class="btn-secondary">
+                İptal
+            </a>
+
+            <button type="submit"
+                    class="btn btn-primary">
+                Markayı Kaydet
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
+
+@section Scripts {
+
+    <partial name="_ValidationScriptsPartial" />
+
+}

@@ -69,26 +69,58 @@ namespace ErenMotorWeb.BLL.Concrete
                 return new ApiResponseDto<IEnumerable<TResultDto>>(null, false, 500, ex.Message);
             }
         }
-
-        public async Task<ApiResponseDto<IEnumerable<TResultDto>>> TGetAllAsync(Expression<Func<TResultDto, bool>> filter)
+        public async Task<ApiResponseDto<IEnumerable<TResultDto>>> TGetAllAsync(
+    Expression<Func<TResultDto, bool>> filter)
         {
             try
             {
-                var expression = FilterExpressionConverter<T, TResultDto>.Convert(filter);
-                var entities = await genericDAL.GetAllAsync(expression);
-                if (entities != null)
-                {
-                    var entitiesDto = mapper.ProjectTo<TResultDto>(entities.AsQueryable()).ToList();
-                    return new ApiResponseDto<IEnumerable<TResultDto>>(entitiesDto, true, 200, $"{EntityName} values fetched successfully by filter.");
-                }
-                return new ApiResponseDto<IEnumerable<TResultDto>>(null, false, 400, $"{EntityName} values not found by filter.");
+                var expression =
+                    FilterExpressionConverter<T, TResultDto>.Convert(filter);
+
+                var entities =
+                    await genericDAL.GetAllAsync(expression);
+
+                var entitiesDto =
+                    mapper.Map<IEnumerable<TResultDto>>(entities);
+
+                return new ApiResponseDto<IEnumerable<TResultDto>>(
+                    entitiesDto,
+                    true,
+                    200,
+                    $"{EntityName} values fetched successfully by filter.");
             }
             catch (Exception ex)
             {
-                Log.Error(ex, $"An error occured while fetching values {EntityName} by filter");
-                return new ApiResponseDto<IEnumerable<TResultDto>>(null, false, 500, ex.Message);
+                Log.Error(
+                    ex,
+                    $"An error occured while fetching values {EntityName} by filter");
+
+                return new ApiResponseDto<IEnumerable<TResultDto>>(
+                    null,
+                    false,
+                    500,
+                    ex.Message);
             }
         }
+        //public async Task<ApiResponseDto<IEnumerable<TResultDto>>> TGetAllAsync(Expression<Func<TResultDto, bool>> filter)
+        //{
+        //    try
+        //    {
+        //        var expression = FilterExpressionConverter<T, TResultDto>.Convert(filter);
+        //        var entities = await genericDAL.GetAllAsync(expression);
+        //        if (entities != null)
+        //        {
+        //            var entitiesDto = mapper.ProjectTo<TResultDto>(entities.AsQueryable()).ToList();
+        //            return new ApiResponseDto<IEnumerable<TResultDto>>(entitiesDto, true, 200, $"{EntityName} values fetched successfully by filter.");
+        //        }
+        //        return new ApiResponseDto<IEnumerable<TResultDto>>(null, false, 400, $"{EntityName} values not found by filter.");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Log.Error(ex, $"An error occured while fetching values {EntityName} by filter");
+        //        return new ApiResponseDto<IEnumerable<TResultDto>>(null, false, 500, ex.Message);
+        //    }
+        //}
 
         public ApiResponseDto<TResultDto> TGetById(int id)
         {
@@ -154,7 +186,7 @@ namespace ErenMotorWeb.BLL.Concrete
             }
         }
 
-        public async Task<ApiResponseDto<string>> TUpdateAsync(TUpdateDto updateDto)
+        public virtual async Task<ApiResponseDto<string>> TUpdateAsync(TUpdateDto updateDto)
         {
             try
             {

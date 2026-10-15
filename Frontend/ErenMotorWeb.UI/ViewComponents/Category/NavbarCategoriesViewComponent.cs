@@ -7,13 +7,16 @@ namespace ErenMotorWeb.UI.ViewComponents.Category
     {
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            var response = await categoryService.GetAllAsync("categories");
-            var success = response.Success;
-            var data = response.Data.Where(x=> x.IsActive && x.ParentCategoryId ==null).ToList();
-            var statusCode = response.StatusCode;
-            if (!success)
-                return HandleError(statusCode);
-            return View(data);
+            var response = await categoryService.TGetAllWithParentAsync();
+
+            if (!response.Success)
+                return HandleError(response.StatusCode);
+
+            var categories = response.Data?
+                .Where(x => x.IsActive)
+                .ToList() ?? [];
+
+            return View(categories);
         }
     }
 }

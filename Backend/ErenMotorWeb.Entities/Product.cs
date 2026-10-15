@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using ErenMotorWeb.Entities.Enums;
+using System.ComponentModel.DataAnnotations;
 
 
 namespace ErenMotorWeb.Entities
@@ -27,6 +28,7 @@ namespace ErenMotorWeb.Entities
         public bool IsActive { get; set; } = true;
 
         public bool IsFeatured { get; set; } = false;
+        public bool IsDeleted { get; set; } = false;
 
         public int CategoryId { get; set; }
 
@@ -37,6 +39,9 @@ namespace ErenMotorWeb.Entities
         public DateTime? UpdatedAt { get; set; }
 
         public int SafetyStock { get; set; } = 0;
+
+        public ProductColors Color { get; set; }
+        public string ModelCode { get; set; } = string.Empty;
 
         [Timestamp]
         public byte[]? RowVersion { get; set; }
@@ -50,6 +55,13 @@ namespace ErenMotorWeb.Entities
         public ICollection<ProductImage>? Images { get; set; }
 
         public ICollection<ProductMapping>? ProductMappings { get; set; }
+
+        public int SupplierId { get; set; }
+
+        public int OriginId { get; set; }
+
+        public virtual Supplier? Supplier { get; set; }
+        public virtual Origin? Origin { get; set; }
 
     }
 }

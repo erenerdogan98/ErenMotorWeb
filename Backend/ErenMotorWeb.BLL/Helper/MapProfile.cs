@@ -2,12 +2,14 @@
 using ErenMotorWeb.Dto.BrandDto;
 using ErenMotorWeb.Dto.CategoryDto;
 using ErenMotorWeb.Dto.Enums;
+using ErenMotorWeb.Dto.OriginDto;
 using ErenMotorWeb.Dto.PlatformConnectionDto;
+using ErenMotorWeb.Dto.ProcessedOrderDto;
 using ErenMotorWeb.Dto.ProductDto;
 using ErenMotorWeb.Dto.ProductImageDto;
 using ErenMotorWeb.Dto.ProductMappingDto;
-using ErenMotorWeb.Dto.ProcessedOrderDto;
 using ErenMotorWeb.Dto.StockMovementDto;
+using ErenMotorWeb.Dto.SupplierDto;
 using ErenMotorWeb.Dto.SyncLogDto;
 using ErenMotorWeb.Entities;
 using ErenMotorWeb.Entities.Enums;
@@ -62,23 +64,68 @@ namespace ErenMotorWeb.BLL.Helper
             // =========================
 
             CreateMap<Product, CreateProductDto>().ReverseMap();
-
+            CreateMap<CreateProductVariantDto, Product>();
             CreateMap<Product, UpdateProductDto>().ReverseMap();
 
             CreateMap<Product, ResultProductDto>()
-                .ForMember(
-                    dest => dest.CategoryName,
-                    opt => opt.MapFrom(src =>
-                        src.Category != null
-                            ? src.Category.Name
-                            : null))
-                .ForMember(
-                    dest => dest.BrandName,
-                    opt => opt.MapFrom(src =>
-                        src.Brand != null
-                            ? src.Brand.Name
-                            : null));
+    .ForMember(
+        dest => dest.CategoryName,
+        opt => opt.MapFrom(src =>
+            src.Category != null
+                ? src.Category.Name
+                : null))
+    .ForMember(
+        dest => dest.BrandName,
+        opt => opt.MapFrom(src =>
+            src.Brand != null
+                ? src.Brand.Name
+                : null))
+    .ForMember(
+        dest => dest.SupplierName,
+        opt => opt.MapFrom(src =>
+            src.Supplier != null
+                ? src.Supplier.CompanyName
+                : null))
+    .ForMember(
+        dest => dest.OriginName,
+        opt => opt.MapFrom(src =>
+            src.Origin != null
+                ? src.Origin.Name
+                : null))
+    .ForMember(
+        dest => dest.OriginCode,
+        opt => opt.MapFrom(src =>
+            src.Origin != null
+                ? src.Origin.Code
+                : null))
+    .ForMember(
+        dest => dest.MainImageUrl,
+        opt => opt.MapFrom(
+            src => src.Images!
+                .Where(x => x.IsMain)
+                .OrderBy(x => x.SortOrder)
+                .Select(x => x.ImageUrl)
+                .FirstOrDefault()));
 
+            // =========================
+            // SUPPLIER
+            // =========================
+
+            CreateMap<Supplier, CreateSupplierDto>().ReverseMap();
+
+            CreateMap<Supplier, UpdateSupplierDto>().ReverseMap();
+
+            CreateMap<Supplier, ResultSupplierDto>().ReverseMap();
+
+            // =========================
+            // ORIGIN
+            // =========================
+
+            CreateMap<Origin, CreateOriginDto>().ReverseMap();
+
+            CreateMap<Origin, UpdateOriginDto>().ReverseMap();
+
+            CreateMap<Origin, ResultOriginDto>().ReverseMap();
 
             // =========================
             // PRODUCT IMAGE

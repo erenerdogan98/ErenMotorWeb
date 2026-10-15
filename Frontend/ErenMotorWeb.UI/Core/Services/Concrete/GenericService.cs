@@ -6,16 +6,18 @@ using System.Text.Json;
 
 namespace ErenMotorWeb.UI.Core.Services.Concrete
 {
-    public class GenericService<TCreateDto, TUpdateDto, TResultDto, TKey>(HttpClientHelper httpClientHelper) : IGenericService<TCreateDto, TUpdateDto, TResultDto, TKey>
+    public class GenericService<TCreateDto, TUpdateDto, TResultDto, TKey>(HttpClientHelper httpClientHelper, string baseEndpoint) : IGenericService<TCreateDto, TUpdateDto, TResultDto, TKey>
     {
         private readonly JsonSerializerOptions _options = new() { PropertyNameCaseInsensitive = true, PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
         private HttpClient CreateClient() => httpClientHelper.CreateClient();
-        public async Task<GetApiResponseDto<string>> CreateAsync(TCreateDto dto, string endpoint)
+
+        #region old
+        public async Task<GetApiResponseDto<string>> CreateAsync(TCreateDto dto)
         {
             try
             {
                 var client = CreateClient();
-                var response = await client.PostAsJsonAsync(endpoint, dto);
+                var response = await client.PostAsJsonAsync(baseEndpoint, dto);
                 return await HandleResponse<string>(response);
             }
             catch (Exception ex)
@@ -25,12 +27,12 @@ namespace ErenMotorWeb.UI.Core.Services.Concrete
             }
         }
 
-        public async Task<GetApiResponseDto<string>> DeleteAsync(TKey id, string endpoint)
+        public async Task<GetApiResponseDto<string>> DeleteAsync(TKey id)
         {
             try
             {
                 var client = CreateClient();
-                var response = await client.DeleteAsync($"{endpoint}/{id}");
+                var response = await client.DeleteAsync($"{baseEndpoint}/{id}");
                 return await HandleResponse<string>(response);
             }
             catch (Exception ex)
@@ -40,12 +42,12 @@ namespace ErenMotorWeb.UI.Core.Services.Concrete
             }
         }
 
-        public async Task<GetApiResponseDto<IEnumerable<TResultDto>>> GetAllAsync(string endpoint)
+        public async Task<GetApiResponseDto<IEnumerable<TResultDto>>> GetAllAsync()
         {
             try
             {
                 var client = CreateClient();
-                var response = await client.GetAsync(endpoint);
+                var response = await client.GetAsync(baseEndpoint);
                 return await HandleResponse<IEnumerable<TResultDto>>(response);
             }
             catch (Exception ex)
@@ -55,12 +57,12 @@ namespace ErenMotorWeb.UI.Core.Services.Concrete
             }
         }
 
-        public async Task<GetApiResponseDto<TResultDto>> GetByIdAsync(TKey id, string endpoint)
+        public async Task<GetApiResponseDto<TResultDto>> GetByIdAsync(TKey id)
         {
             try
             {
                 var client = CreateClient();
-                var response = await client.GetAsync($"{endpoint}/{id}");
+                var response = await client.GetAsync($"{baseEndpoint}/{id}");
                 return await HandleResponse<TResultDto>(response);
             }
             catch (Exception ex)
@@ -70,12 +72,12 @@ namespace ErenMotorWeb.UI.Core.Services.Concrete
             }
         }
 
-        public async Task<GetApiResponseDto<string>> UpdateAsync(TUpdateDto dto, string endpoint)
+        public async Task<GetApiResponseDto<string>> UpdateAsync(TUpdateDto dto)
         {
             try
             {
                 var client = CreateClient();
-                var response = await client.PutAsJsonAsync(endpoint, dto);
+                var response = await client.PutAsJsonAsync(baseEndpoint, dto);
                 return await HandleResponse<string>(response);
             }
             catch (Exception ex)
@@ -106,5 +108,7 @@ namespace ErenMotorWeb.UI.Core.Services.Concrete
                 return new GetApiResponseDto<T>(default, false, response.ReasonPhrase, (int)response.StatusCode);
             }
         }
+
+        #endregion
     }
 }

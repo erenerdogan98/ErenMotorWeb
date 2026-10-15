@@ -1,0 +1,237 @@
+﻿@using ErenMotorWeb.UI.Core.Dtos.BrandDto
+@model IEnumerable<ResultBrandDto>
+
+@{
+    ViewData["Title"] = "Markalar";
+    Layout = "~/Areas/Admin/Views/Layout/AdminLayout.cshtml";
+}
+
+<div class="brands-page">
+
+    <!-- Page Header -->
+    <div class="brands-page-header">
+
+        <div class="brands-page-title">
+            <h1>Markalar</h1>
+            <p>Mağazanızda kullanılan markaları yönetin.</p>
+        </div>
+
+        <a asp-area="Admin"
+           asp-controller="Brand"
+           asp-action="AddBrand"
+           class="brands-add-btn">
+            <i class="fa-solid fa-plus"></i>
+            Yeni Marka
+        </a>
+
+    </div>
+
+
+    <!-- Brands Card -->
+    <div class="brands-card">
+
+        <!-- Toolbar -->
+        <div class="brands-toolbar">
+
+            <div class="brands-search">
+
+                <i class="fa-solid fa-magnifying-glass brands-search-icon"></i>
+
+                <input type="text"
+                       id="brandSearch"
+                       placeholder="Marka ara..." />
+
+            </div>
+
+        </div>
+
+
+        <!-- Table -->
+        <div class="brands-table-wrapper">
+
+            @if (Model != null && Model.Any())
+            {
+                <table class="brands-table">
+
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Marka</th>
+                            <th>Slug</th>
+                            <th>Açıklama</th>
+                            <th>Durum</th>
+                            <th>Oluşturulma</th>
+                            <th>İşlemler</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="brandsTableBody">
+
+                        @{
+                            var rowNumber = 1;
+                        }
+
+                        @foreach (var brand in Model)
+                        {
+                            <tr>
+
+                                <!-- # -->
+                                <td>
+                                    @rowNumber
+                                </td>
+
+
+                                <!-- Brand -->
+                                <td>
+                                    <div class="brand-name">
+
+                                        <div class="brand-avatar">
+                                            @(string.IsNullOrWhiteSpace(brand.Name)
+                                                                                ? "?"
+                                                                                : brand.Name.Substring(0, 1).ToUpper())
+                                                                                                                   </div>
+
+                                        <span>
+                                            @brand.Name
+                                        </span>
+
+                                    </div>
+                                </td>
+
+
+                                <!-- Slug -->
+                                <td>
+                                    @brand.Slug
+                                </td>
+
+
+                                <!-- Description -->
+                                <td>
+                                    @(string.IsNullOrWhiteSpace(brand.Description)
+                                                                ? "-"
+                                                                : brand.Description)
+                        </td>
+
+
+                                <!-- Status -->
+                                <td>
+
+                            @if (brand.IsActive)
+                                    {
+                                        <span class="brand-status active">
+                                            <i class="fa-solid fa-circle"></i>
+                                            Aktif
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="brand-status passive">
+                                            <i class="fa-solid fa-circle"></i>
+                                            Pasif
+                                        </span>
+                                    }
+
+                                </td>
+
+
+                                <!-- Created Date -->
+                                <td>
+                                    @brand.CreatedAt.ToString("dd.MM.yyyy")
+                                </td>
+
+
+                                <!-- Actions -->
+                                <td>
+
+                                    <div class="brand-actions">
+
+                                        <a asp-area="Admin"
+                                           asp-controller="Brand"
+                                           asp-action="Edit"
+                                           asp-route-id="@brand.Id"
+                                           class="brand-action-btn"
+                                           title="Düzenle">
+
+                                            <i class="fa-solid fa-pen"></i>
+
+                                        </a>
+
+                                        <a asp-area="Admin"
+                                           asp-controller="Brand"
+                                           asp-action="Delete"
+                                           asp-route-id="@brand.Id"
+                                           class="brand-action-btn delete"
+                                           title="Sil">
+
+                                            <i class="fa-solid fa-trash"></i>
+
+                                        </a>
+
+                                    </div>
+
+                                </td>
+
+                            </tr>
+
+                            rowNumber++;
+                        }
+
+                    </tbody>
+
+                </table>
+            }
+            else
+            {
+                <div class="brands-empty">
+
+                    <div class="brands-empty-icon">
+                        <i class="fa-solid fa-tags"></i>
+                    </div>
+
+                    <h3>Henüz marka bulunmuyor</h3>
+
+                    <p>
+                        İlk markanızı ekleyerek başlayabilirsiniz.
+                    </p>
+
+                </div>
+            }
+
+        </div>
+
+    </div>
+
+</div>
+
+
+@section Scripts
+{
+    <script>
+
+        document
+            .getElementById("brandSearch")
+            ?.addEventListener("keyup", function () {
+
+                const searchValue = this.value.toLowerCase();
+
+                const rows =
+                    document.querySelectorAll("#brandsTableBody tr");
+
+                rows.forEach(row => {
+
+                    const brandName =
+                        row
+                            .querySelector(".brand-name span")
+                            ?.textContent
+                            .toLowerCase() ?? "";
+
+                    row.style.display =
+                        brandName.includes(searchValue)
+                            ? ""
+                            : "none";
+                });
+
+            });
+
+    </script>
+}

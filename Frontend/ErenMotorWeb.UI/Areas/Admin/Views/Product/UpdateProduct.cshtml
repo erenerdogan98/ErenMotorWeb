@@ -1,0 +1,500 @@
+﻿@model ErenMotorWeb.UI.Core.Dtos.ProductDto.ResultProductDto
+
+@{
+    ViewData["Title"] = "Ürün Güncelle";
+    Layout = "~/Areas/Admin/Views/Layout/AdminLayout.cshtml";
+}
+
+<div class="product-create-page">
+
+    <!-- Sayfa Başlığı -->
+    <div class="page-header">
+
+        <div class="page-header-left">
+            <h1>Ürün Güncelle</h1>
+            <p>Ürün bilgilerini buradan güncelleyebilirsiniz.</p>
+        </div>
+
+        <div class="page-header-right">
+            <a asp-area="Admin"
+               asp-controller="Product"
+               asp-action="Products"
+               class="btn btn-secondary">
+                ← Ürünlere Dön
+            </a>
+        </div>
+
+    </div>
+
+
+    <!-- Form -->
+    <div class="form-card">
+
+        <form asp-area="Admin"
+              asp-controller="Product"
+              asp-action="UpdateProduct"
+              method="post">
+
+            <input asp-for="Id" type="hidden" />
+
+
+            <!-- Genel Bilgiler -->
+            <div class="form-card-header">
+                <h2>Genel Bilgiler</h2>
+                <p>Ürünün temel bilgilerini güncelleyin.</p>
+            </div>
+
+            <div class="form-card-body">
+
+                <!-- Ürün Adı -->
+                <div class="form-group full-width">
+
+                    <label asp-for="ProductName">
+                        Ürün Adı
+                    </label>
+
+                    <input asp-for="ProductName"
+                           class="form-control"
+                           placeholder="Örn: 29x2.10 Timsah Bisiklet Dış Lastiği" />
+
+                    <span asp-validation-for="ProductName"
+                          class="field-validation">
+                    </span>
+
+                </div>
+
+
+                <!-- Slug + Model Kodu -->
+                <div class="form-row">
+
+                    <!-- Slug -->
+                    <div class="form-group">
+
+                        <label asp-for="Slug">
+                            Slug
+                        </label>
+
+                        <input asp-for="Slug"
+                               class="form-control"
+                               placeholder="urun-adi-slug" />
+
+                        <span asp-validation-for="Slug"
+                              class="field-validation">
+                        </span>
+
+                        <small>
+                            URL içerisinde kullanılacak ürün adresi.
+                        </small>
+
+                    </div>
+
+
+                    <!-- Model Kodu -->
+                    <div class="form-group">
+
+                        <label asp-for="ModelCode">
+                            Model Kodu
+                        </label>
+
+                        <input asp-for="ModelCode"
+                               class="form-control"
+                               placeholder="Örn: TM-2910" />
+
+                        <span asp-validation-for="ModelCode"
+                              class="field-validation">
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- SKU + Renk -->
+                <div class="form-row">
+
+                    <!-- SKU -->
+                    <div class="form-group">
+
+                        <label asp-for="Sku">
+                            SKU
+                        </label>
+
+                        <input asp-for="Sku"
+                               class="form-control"
+                               placeholder="Örn: TM-2910-SYH" />
+
+                        <span asp-validation-for="Sku"
+                              class="field-validation">
+                        </span>
+
+                    </div>
+
+
+                    <!-- Renk -->
+                    <div class="form-group">
+
+                        <label asp-for="Color">
+                            Renk
+                        </label>
+
+                        <select asp-for="Color"
+                                class="form-control">
+
+                            <option value="0">Renk Seçiniz</option>
+                            <option value="1">Kırmızı</option>
+                            <option value="2">Sarı</option>
+                            <option value="3">Mavi</option>
+                            <option value="4">Yeşil</option>
+                            <option value="5">Siyah</option>
+                            <option value="6">Beyaz</option>
+                            <option value="7">Gri</option>
+                            <option value="8">Turuncu</option>
+                            <option value="9">Mor</option>
+                            <option value="10">Pembe</option>
+                            <option value="11">Kahverengi</option>
+                            <option value="12">Lacivert</option>
+                            <option value="13">Bej</option>
+                            <option value="14">Gümüş</option>
+                            <option value="15">Altın</option>
+                            <option value="16">Şeffaf</option>
+
+                        </select>
+
+                        <span asp-validation-for="Color"
+                              class="field-validation">
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Barkod -->
+                <div class="form-group">
+
+                    <label asp-for="Barcode">
+                        Barkod
+                    </label>
+
+                    <input asp-for="Barcode"
+                           class="form-control"
+                           placeholder="Barkod numarasını girin" />
+
+                    <span asp-validation-for="Barcode"
+                          class="field-validation">
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- Kategori ve Tedarik Bilgileri -->
+            <div class="form-card-header">
+
+                <h2>Kategori ve Tedarik Bilgileri</h2>
+
+                <p>
+                    Ürünün kategori, marka, tedarikçi ve menşe bilgilerini güncelleyin.
+                </p>
+
+            </div>
+
+            <div class="form-card-body">
+
+                <div class="form-row">
+
+                    <!-- Kategori -->
+                    <div class="form-group">
+
+                        <label asp-for="CategoryId">
+                            Kategori
+                        </label>
+
+                        @await Component.InvokeAsync(
+                        "CategorySelect",
+                                                new
+                                                {
+                                                    selectedCategoryId = Model.CategoryId
+                                                })
+
+                        <span asp-validation-for="CategoryId"
+                              class="field-validation">
+                        </span>
+
+                    </div>
+
+
+                    <!-- Marka -->
+                    <div class="form-group">
+
+                        <label asp-for="BrandId">
+                            Marka
+                        </label>
+
+                        @await Component.InvokeAsync(
+                                                "BrandSelect",
+                                                new
+                                                {
+                                                    selectedBrandId = Model.BrandId
+                                                })
+
+                        <span asp-validation-for="BrandId"
+                              class="field-validation">
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-row">
+
+                    <!-- Tedarikçi -->
+                    <div class="form-group">
+
+                        <label asp-for="SupplierId">
+                            Tedarikçi
+                        </label>
+
+                        @await Component.InvokeAsync(
+                                                "SupplierSelect",
+                                                new
+                                                {
+                                                    selectedSupplierId = Model.SupplierId
+                                                })
+
+                        <span asp-validation-for="SupplierId"
+                              class="field-validation">
+                        </span>
+
+                    </div>
+
+
+                    <!-- Menşe -->
+                    <div class="form-group">
+
+                        <label asp-for="OriginId">
+                            Menşe
+                        </label>
+
+                        @await Component.InvokeAsync(
+                                                "OriginSelect",
+                                                new
+                                                {
+                                                    selectedOriginId = Model.OriginId
+                                                })
+
+                        <span asp-validation-for="OriginId"
+                              class="field-validation">
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Satış Bilgileri -->
+            <div class="form-card-header">
+
+                <h2>Satış Bilgileri</h2>
+
+                <p>
+                    Ürünün fiyat ve stok bilgilerini güncelleyin.
+                </p>
+
+            </div>
+
+            <div class="form-card-body">
+
+                <div class="form-row">
+
+                    <!-- Satış Fiyatı -->
+                    <div class="form-group">
+
+                        <label asp-for="Price">
+                            Satış Fiyatı
+                        </label>
+
+                        <div class="input-with-suffix">
+
+                            <input asp-for="Price"
+                                   type="number"
+                                   step="0.01"
+                                   class="form-control"
+                                   placeholder="0.00" />
+
+                            <span>₺</span>
+
+                        </div>
+
+                        <span asp-validation-for="Price"
+                              class="field-validation">
+                        </span>
+
+                    </div>
+
+
+                    <!-- Stok -->
+                    <div class="form-group">
+
+                        <label asp-for="Stock">
+                            Stok
+                        </label>
+
+                        <input asp-for="Stock"
+                               type="number"
+                               min="0"
+                               class="form-control"
+                               placeholder="0" />
+
+                        <span asp-validation-for="Stock"
+                              class="field-validation">
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Ürün Açıklaması -->
+            <div class="form-card-header">
+
+                <h2>Ürün Açıklaması</h2>
+
+                <p>
+                    Ürünün kısa ve detaylı açıklamasını güncelleyin.
+                </p>
+
+            </div>
+
+            <div class="form-card-body">
+
+                <!-- Kısa Açıklama -->
+                <div class="form-group">
+
+                    <label asp-for="ShortDescription">
+                        Kısa Açıklama
+                    </label>
+
+                    <textarea asp-for="ShortDescription"
+                              class="form-control textarea-short"
+                              placeholder="Ürün hakkında kısa bir açıklama..."></textarea>
+
+                    <span asp-validation-for="ShortDescription"
+                          class="field-validation">
+                    </span>
+
+                </div>
+
+
+                <!-- Detaylı Açıklama -->
+                <div class="form-group">
+
+                    <label asp-for="Description">
+                        Detaylı Açıklama
+                    </label>
+
+                    <textarea asp-for="Description"
+                              class="form-control textarea-large"
+                              placeholder="Ürünün detaylı açıklamasını girin..."></textarea>
+
+                    <span asp-validation-for="Description"
+                          class="field-validation">
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- Ürün Durumu -->
+            <div class="form-card-header">
+
+                <h2>Ürün Durumu</h2>
+
+                <p>
+                    Ürünün mağazadaki görünürlüğünü belirleyin.
+                </p>
+
+            </div>
+
+            <div class="form-card-body">
+
+                <div class="switch-group">
+
+                    <!-- Aktif Ürün -->
+                    <label class="switch-label">
+
+                        <input asp-for="IsActive"
+                               type="checkbox" />
+
+                        <span class="switch"></span>
+
+                        <span>
+                            <strong>Aktif Ürün</strong>
+
+                            <small>
+                                Ürün mağazada aktif olarak yayınlansın.
+                            </small>
+                        </span>
+
+                    </label>
+
+
+                    <!-- Öne Çıkan Ürün -->
+                    <label class="switch-label">
+
+                        <input asp-for="IsFeatured"
+                               type="checkbox" />
+
+                        <span class="switch"></span>
+
+                        <span>
+                            <strong>Öne Çıkan Ürün</strong>
+
+                            <small>
+                                Ürün öne çıkan ürünler arasında gösterilsin.
+                            </small>
+                        </span>
+
+                    </label>
+
+                </div>
+
+            </div>
+
+
+            <!-- Butonlar -->
+            <div class="form-actions">
+
+                <a asp-area="Admin"
+                   asp-controller="Product"
+                   asp-action="Products"
+                   class="btn btn-secondary">
+                    İptal
+                </a>
+
+                <button type="submit"
+                        class="btn btn-primary">
+                    ✓ Değişiklikleri Kaydet
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+@section Scripts {
+
+    <partial name="_ValidationScriptsPartial" />
+
+}

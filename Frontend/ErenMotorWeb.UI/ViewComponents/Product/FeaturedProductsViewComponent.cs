@@ -7,7 +7,7 @@ namespace ErenMotorWeb.UI.ViewComponents.Product
     {
         public async Task<IViewComponentResult> InvokeAsync()
         {
-            var response = await productService.GetAllAsync("products");
+            var response = await productService.GetAllAsync();
             var values = response.Data?
                 .Where(x => x.IsActive && x.IsFeatured)
                 .Take(8)

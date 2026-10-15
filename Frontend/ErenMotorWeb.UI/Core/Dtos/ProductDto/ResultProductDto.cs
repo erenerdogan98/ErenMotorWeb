@@ -13,7 +13,9 @@ namespace ErenMotorWeb.UI.Core.Dtos.ProductDto
         public string Barcode { get; set; } = string.Empty;
 
         public string? Sku { get; set; }
+        public string ModelCode { get; set; } = string.Empty;
 
+        public int Color { get; set; }
         public string? ShortDescription { get; set; }
 
         public string? Description { get; set; }
@@ -25,6 +27,7 @@ namespace ErenMotorWeb.UI.Core.Dtos.ProductDto
         public bool IsActive { get; set; }
 
         public bool IsFeatured { get; set; }
+        public bool IsDeleted { get; set; }
 
         public int CategoryId { get; set; }
 
@@ -33,11 +36,19 @@ namespace ErenMotorWeb.UI.Core.Dtos.ProductDto
         public int BrandId { get; set; }
 
         public string? BrandName { get; set; }
+        public int SupplierId { get; set; }
+
+        public string? SupplierName { get; set; }
+
+        public int? OriginId { get; set; }
+        public string? OriginName { get; set; }
+
+        public string? OriginCode { get; set; }
 
         public DateTime CreatedAt { get; set; }
 
         public DateTime? UpdatedAt { get; set; }
-
+        public string? MainImageUrl { get; set; }
         public ICollection<ResultProductImageDto> Images { get; set; }
             = [];
     }

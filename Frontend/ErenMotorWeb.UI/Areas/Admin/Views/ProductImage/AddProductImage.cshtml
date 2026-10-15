@@ -1,0 +1,265 @@
+﻿@model ErenMotorWeb.UI.Core.Dtos.ProductImageDto.CreateProductImageDto
+
+@{
+    ViewData["Title"] = "Ürün Görselleri";
+    Layout = "~/Areas/Admin/Views/Layout/AdminLayout.cshtml";
+}
+
+<div class="admin-page">
+
+    <div class="page-header">
+
+        <div>
+            <h1>Ürün Görselleri</h1>
+            <p>Ürüne bir veya birden fazla görsel ekleyin.</p>
+        </div>
+
+        <a asp-area="Admin"
+           asp-controller="Product"
+           asp-action="Products"
+           class="btn btn-secondary">
+
+            <i class="fa-solid fa-arrow-left"></i>
+
+            Ürünlere Dön
+
+        </a>
+
+    </div>
+
+
+    <div class="form-card">
+
+        <form asp-area="Admin"
+              asp-controller="ProductImage"
+              asp-action="AddProductImage"
+              method="post"
+              enctype="multipart/form-data">
+
+            <input asp-for="ProductId"
+                   type="hidden" />
+
+
+            <div class="form-section">
+
+                <div class="form-section-title">
+
+                    <i class="fa-solid fa-images"></i>
+
+                    Ürün Görselleri
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="images">
+                        Ürün Görselleri
+                    </label>
+
+
+                    <div class="image-upload-area">
+
+                        <div class="upload-icon">
+
+                            <i class="fa-solid fa-cloud-arrow-up"></i>
+
+                        </div>
+
+
+                        <div class="upload-content">
+
+                            <strong>
+                                Ürün görsellerini seçin
+                            </strong>
+
+                            <span>
+                                Birden fazla JPG, JPEG, PNG veya WEBP seçebilirsiniz.
+                            </span>
+
+
+                            <label for="images"
+                                   class="upload-button">
+
+                                Görselleri Seç
+
+                            </label>
+
+
+                            <input type="file"
+                                   id="images"
+                                   name="images"
+                                   accept="image/jpeg,image/png,image/webp"
+                                   multiple
+                                   required />
+
+
+                            <div id="selectedFileNames"
+                                 class="selected-file-name">
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <span asp-validation-for="ImageUrl"
+                          class="validation-message">
+                    </span>
+
+                    <div id="imagePreview"
+                         style="display:flex; flex-wrap:wrap; gap:15px; margin-top:20px;">
+                    </div>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label asp-for="AltText">
+                        Alt Metin
+                    </label>
+
+                    <input asp-for="AltText"
+                           class="form-control"
+                           placeholder="Örn: Shimano arka aktarıcı" />
+
+                    <small>
+                        Seçilen tüm görseller için kullanılacaktır.
+                    </small>
+
+                </div>
+
+            </div>
+
+
+            <div class="form-actions">
+
+                <a asp-area="Admin"
+                   asp-controller="Product"
+                   asp-action="Products"
+                   class="btn btn-secondary">
+
+                    İptal
+
+                </a>
+
+
+                <button type="submit"
+                        class="btn btn-primary">
+
+                    <i class="fa-solid fa-upload"></i>
+
+                    Görselleri Kaydet
+
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+@section Scripts {
+
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+
+        const imageInput =
+            document.getElementById("images");
+
+        const selectedFileNames =
+            document.getElementById("selectedFileNames");
+
+        const imagePreview =
+            document.getElementById("imagePreview");
+
+
+        imageInput.addEventListener("change", function () {
+
+            selectedFileNames.innerHTML = "";
+            imagePreview.innerHTML = "";
+
+            if (!this.files || this.files.length === 0)
+                return;
+
+
+            const title =
+                document.createElement("strong");
+
+            title.textContent =
+                `${this.files.length} görsel seçildi`;
+
+            selectedFileNames.appendChild(title);
+
+
+            Array.from(this.files).forEach(
+                (file, index) => {
+
+                    const reader =
+                        new FileReader();
+
+
+                    reader.onload = function (e) {
+
+                        const wrapper =
+                            document.createElement("div");
+
+                        wrapper.style.width = "140px";
+                        wrapper.style.position = "relative";
+
+
+                        const img =
+                            document.createElement("img");
+
+                        img.src = e.target.result;
+
+                        img.style.width = "140px";
+                        img.style.height = "140px";
+                        img.style.objectFit = "cover";
+                        img.style.borderRadius = "8px";
+                        img.style.border = "1px solid #ddd";
+
+
+                        const label =
+                            document.createElement("div");
+
+                        label.style.marginTop = "5px";
+                        label.style.fontSize = "13px";
+                        label.style.textAlign = "center";
+
+
+                        if (index === 0) {
+
+                            label.innerHTML =
+                                "⭐ <strong>Ana Görsel</strong>";
+
+                        }
+                        else {
+
+                            label.textContent =
+                                `Görsel ${index + 1}`;
+
+                        }
+
+
+                        wrapper.appendChild(img);
+                        wrapper.appendChild(label);
+
+                        imagePreview.appendChild(wrapper);
+
+                    };
+
+
+                    reader.readAsDataURL(file);
+
+                });
+
+        });
+
+    </script>
+}

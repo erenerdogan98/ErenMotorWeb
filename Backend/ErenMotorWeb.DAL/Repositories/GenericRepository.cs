@@ -12,7 +12,7 @@ namespace ErenMotorWeb.DAL.Repositories
     {
         protected readonly DbSet<T> dbSet = context.Set<T>();
 
-        private async Task SaveChangesAsync()
+        public async Task SaveChangesAsync()
         {
             await context.SaveChangesAsync();
         }
